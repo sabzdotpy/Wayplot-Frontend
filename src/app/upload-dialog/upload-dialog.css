@@ -1,0 +1,89 @@
+h2{
+    background-color: #FFB576;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+  width: 400px;
+  padding: 20px 24px !important; 
+  /* background-color: #FFB576; */
+  background-image: linear-gradient(
+        to bottom right,  
+        #FFB576,          
+        #FFDAB9         
+    ) ;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom:8px ;    
+  color: #333; 
+}
+
+#mapName {
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+#mapName:focus {
+  border: 2px solid #f3770b;
+  box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+}
+#mapName::placeholder {
+  color: #aaa;
+}
+
+.file-controls-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+#upload-btn{
+    background-color: #f5a056;
+    color: white;
+    box-shadow: #333 2px 2px 5px;
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+}
+#upload-btn:hover{
+    background-color: #f3770b;
+    cursor: pointer;
+}
+
+mat-dialog-actions {
+    background-image: linear-gradient(
+        to top right,  
+        #FFB576,          
+        #FFDAB9           
+    ) ;
+    padding: 8px 24px 24px; /* Space below the buttons and matching side padding */
+}
+
+.save-map-btn{
+    background-color: #f5a056;
+    color: white !important;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+}
+.save-map-btn:hover{
+    background-color: #f3770b;
+}
+
+::ng-deep.uploading-status circle {
+  stroke: #f3770b !important;
+}
+
+

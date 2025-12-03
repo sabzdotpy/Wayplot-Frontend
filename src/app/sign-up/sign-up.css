@@ -3,6 +3,7 @@
 
 :host {
   font-family: 'Poppins', sans-serif;
+  display: block;
 }
 
 /* --- Layout & Background --- */
@@ -12,21 +13,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* New Abstract Dark Background Image */
+  padding: 20px;
+   /* Added padding for small screens */
+  /* Abstract Dark Background Image */
   background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop') no-repeat center center/cover;
 }
 
 /* --- Dark Glass Card --- */
 .glass-card {
   width: 80%;
-  max-width: 350px;
-  /* Dark, transparent background */
+  max-width: 400px; /* Slightly wider to accommodate more fields */
   background: rgba(255, 255, 255, 0.05);
-  /* Stronger blur for depth */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: 50px 50px;
-  /* Subtle light border */
+  padding: 15px 40px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -35,14 +35,16 @@
 
 /* --- Header --- */
 .card-header {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .logo-text {
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 1 rem;
   opacity: 0.9;
   margin-bottom: 5px;
+  /* text-transform: uppercase; */
+  /* letter-spacing: 1px; */
 }
 
 .title-text {
@@ -54,7 +56,6 @@
 /* --- Form Elements --- */
 .form-group {
   margin-bottom: 15px;
-  
 }
 
 .form-group label {
@@ -69,37 +70,22 @@
   width: 94.2%;
   padding: 15px 12px 15px 15px;  /* top right bottom left*/
   border: none;
-  /* Solid white background for inputs */
   background: #ffffff;
   border-radius: 12px;
   font-size: 0.8rem;
   color: #333;
   outline: none;
   font-family: inherit;
+  transition: box-shadow 0.3s ease;
 }
+
+
 
 .form-input::placeholder {
   color: #999;
 }
 
-/* --- Links --- */
-.forgot-link {
-  display: block;
-  text-align: right;
-  margin-top: 10px;
-  font-size: 0.75rem;
-  color: #ffffff;
-  text-decoration: none;
-  opacity: 0.8;
-  transition: opacity 0.3s;
-}
-
-.forgot-link:hover, .register-link:hover {
-  opacity: 1;
-  text-decoration: underline;
-}
-
-/* --- Sign In Button --- */
+/* --- Sign Up Button --- */
 .btn {
   width: 100%;
   padding: 12px;
@@ -110,20 +96,21 @@
   cursor: pointer;
   transition: all 0.3s;
   font-family: inherit;
+  margin-top: 8px;
 }
 
-.btn-signin {
+.btn-signup {
   /* Vibrant Magenta/Pink color */
   background: #D90445;
   color: #ffffff;
   box-shadow: 0 4px 15px rgba(217, 4, 69, 0.3);
 }
 
-.btn-signin:hover {
+.btn-signup:hover {
   background: #bd033c;
   box-shadow: 0 6px 20px rgba(217, 4, 69, 0.5);
+  transform: translateY(-2px);
 }
-
 
 .divider{
     display: flex;
@@ -153,6 +140,7 @@
 
 .btn-social {
   width: 100%;
+  /* height: 60px; */
   padding: 12px;
   border-radius: 12px;
   font-size: 1.0rem;
@@ -173,33 +161,6 @@
   box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
-/* --- Footer --- */
-.card-footer {
-  text-align: center;
-  font-size: 0.75rem;
-  opacity: 0.9;
-}
-
-.register-link {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  margin-left: 5px;
-}
-
-
-
-/* --- Mobile Responsive --- */
-@media (max-width: 480px) {
-  .glass-card {
-    width: 95%;
-    padding: 30px 25px;
-  }
-  .title-text {
-    font-size: 1.8rem;
-  }
-}
-
 .btn-social img {
   display: inline-block;
   width: 25px;
@@ -209,3 +170,39 @@
  
 }
 
+/* --- Footer --- */
+.card-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 10px;
+}
+
+.login-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+  opacity: 0.9;
+  transition: border 0.3s;
+}
+
+.login-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 30px 20px;
+  }
+  .title-text {
+    font-size: 1.7rem;
+  }
+  .btn-social {
+    width: 50px;
+    height: 50px;
+  }
+}

@@ -1,0 +1,432 @@
+/* --- Reset & Global --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:host {
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+/* --- Background & Layout --- */
+.page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop') no-repeat center center/cover;
+  background-attachment: fixed; /*Parallax feel*/
+  padding-bottom: 40px;
+}
+
+
+
+/* --- Glass Navigation --- */
+.glass-nav {
+  width: 100%;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:5px 20px  ;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.nav-brand .badge {
+  font-size: 0.7rem;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+
+
+/* --- Grid Layout --- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;  /* Left content fluid, right sidebar fixed */
+  gap: 25px;
+  max-width: 1400px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* --- Glass Panels (Reusable) --- */
+.glass-panel {
+  background: rgba(20, 20, 20, 0.6); 
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Left Column: Map List --- */
+.panel-header {
+  display: flex;  
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.panel-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-primary,.btn-secondary{
+  background: #D90445; /* Pink/Magenta Theme */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(217, 4, 69, 0.3);
+}
+
+.btn-primary:hover {
+  background: #bd033c;
+  transform: translateY(-2px);
+}
+
+.btn-secondary{
+  background:#3e3e3e;
+  box-shadow:  0 4px 15px rgba(132, 132, 132, 0.3);;
+}
+.btn-secondary:hover{
+  background:#bd033c;
+  transform: translateY(-2px);
+}
+.validation-btn:disabled{
+  background: #888888;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+/* Map Items */
+.map-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+.map-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+.map-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.map-item-content{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.map-do-edit{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-map-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  column-gap: 30px;
+  width: 100%;
+}
+
+.edit-map-form > div:nth-child(-n+3) {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.edit-map-form div label {
+  margin-bottom: 10px;
+}
+
+.updates-btn {
+  display: flex;
+  justify-content: flex-end;
+  /* background-color: #34d399; */
+  gap: 45px;
+}
+
+.edit-map-form input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+
+
+.map-icon-box {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: #fff;
+}
+
+.map-info {
+  flex: 1;
+}
+
+.map-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.map-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.map-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tags & Status */
+.tag {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+}
+
+.status {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-active {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+}
+
+.status-draft {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0 5px;
+}
+
+.btn-icon:hover { opacity: 1; }
+
+/* --- Right Column: Widgets --- */
+.widget {
+  margin-bottom: 25px;
+}
+
+.widget h3 {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin: 0 0 20px 0;
+  font-weight: 400;
+  border-bottom: 1px dashed rgba(255,255,255,0.2);
+  padding-bottom: 10px;
+}
+
+.big-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-trend {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+}
+
+.stat-trend.positive { color: #34d399; }
+
+/* Chart placeholders */
+.chart-container {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.bar-chart .bar {
+  width: 10%;
+  background: linear-gradient(to top, #D90445, #ff5e94);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+  /* transition: height 0.5s ease; */
+}
+
+.bar-chart .bar:hover { opacity: 1; }
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.7rem;
+  opacity: 0.6;
+  padding: 0 5px;
+}
+
+.line-chart-wrapper svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr; /* Stack columns */
+  }
+  
+  .glass-panel {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .map-icon-box {
+    margin-bottom: 10px;
+  }
+  
+  .map-meta {
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 768px) {
+  .edit-map-form {
+    grid-template-columns: 1fr; /* Stack all inputs vertically */
+    row-gap: 15px;
+  }
+  .updates-btn {
+    justify-content: flex-start; /* Buttons stack naturally */
+    gap: 10px;
+  }
+}
+
+/* --- Menu Wrapper --- */
+.menu-wrapper {
+  position: relative; /* Crucial for absolute positioning of dropdown */
+}
+
+/* --- The Dropdown Container --- */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position right below the button */
+  right: 0;
+  width: 160px;
+  background: rgba(30, 30, 30, 0.95); /* Very dark background */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  z-index: 50; /* Ensure it sits on top of everything */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  /* animation: fadeIn 0.2s ease-out; */
+}
+
+/* --- Menu Items --- */
+.menu-item {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  text-align: left;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Specific Style for Delete (Red) --- */
+/* .menu-item.delete {
+  color: #ff4d4d;
+}
+
+.menu-item.delete:hover {
+  background: rgba(255, 77, 77, 0.1);
+} */
+
+/* --- Animation --- */
+/* @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} */
+
+
+
+/* * {
+  outline: 1px solid red;
+} */
