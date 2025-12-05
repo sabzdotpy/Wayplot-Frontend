@@ -8,6 +8,7 @@ export interface MapData{
   uploadedAt: Date;
   active: boolean;
 }
+
 @Injectable({
   providedIn: 'root',
 })
