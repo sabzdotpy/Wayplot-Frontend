@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "WayPlot": {
+    "wayplot": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "WayPlot:build:production"
+              "buildTarget": "wayplot:build:production"
             },
             "development": {
-              "buildTarget": "WayPlot:build:development"
+              "buildTarget": "wayplot:build:development"
             }
           },
           "defaultConfiguration": "development"
