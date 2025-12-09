@@ -1,0 +1,76 @@
+<div class="container">
+    
+    <div class="sidebar">
+        <div class="header">
+            <h3>{{mapName}}</h3>
+        </div>
+        
+        <div class="panel">
+            <h4>Route Planning</h4>
+
+            <label>From</label>
+            <div class="input-group">
+                <input type="text" 
+                       placeholder="Enter starting point..." 
+                       [(ngModel)]="startLocationText" 
+                       (focus)="statusMessage = 'Click on map to set start point.'"
+                       readonly>
+                <button class="icon-btn" title="Current Location" (click)="fetchCurrentLocation()">
+                    &#x2316;
+                </button>
+            </div>
+
+            <label>To</label>
+            <div class="input-group">
+                <input type="text" 
+                       placeholder="Enter destination..." 
+                       [(ngModel)]="endLocationText" 
+                       (focus)="statusMessage = 'Click on map to set end point.'"
+                       readonly>
+            </div>
+            
+            <button class="reset-btn" (click)="resetMap()">Clear Route</button>
+        </div>
+        
+        <div class="panel">
+            <h4>Navigation Mode</h4>
+            <div class="mode-options">
+                <label>
+                    <input type="radio" name="mode" value="shortest" [(ngModel)]="navigationMode"> 
+                    Shortest Path
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="energy_efficient" [(ngModel)]="navigationMode"> 
+                    Energy Efficient Path
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="least_turn" [(ngModel)]="navigationMode"> 
+                    Least Turn Path
+                </label>
+            </div>
+        </div>
+        
+        <div class="calculate-panel">
+            <button class="calculate-btn" (click)="calculateRoute()"[disabled]="startNodeId === null || endNodeId === null">
+                Calculate Route
+            </button>
+        </div>
+
+        <div class="panel status-panel">
+            <h4>Status / Distance</h4>
+            <div class="status-box" [innerHTML]="statusMessage"></div>
+        </div>
+
+        <div class="panel legend-panel">
+            <h4>Legend</h4>
+            <ul>
+                <li><span class="legend-start"></span> Start Marker</li>
+                <li><span class="legend-end"></span> End Marker</li>
+                <li><span class="legend-route"></span> Calculated Route</li>
+                <li><span class="legend-path"></span> Campus Roads (Graph Edges)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+</div>

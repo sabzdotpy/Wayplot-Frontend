@@ -1,0 +1,79 @@
+<div class="page-wrapper">
+  
+  <nav class="glass-nav">
+    <div class="nav-brand">WAYPLOT <span class="badge">USER DASHBOARD</span></div>
+  </nav>
+
+  <div class="dashboard-container">
+
+    <div class="glass-panel main-panel">
+      
+      <div class="panel-header">
+        <h2>Explore Maps</h2>
+        
+        <div class="search-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search by name, tags, or description..." 
+            [(ngModel)]="searchText"
+            class="search-input">
+        </div>
+      </div>
+      
+      <div class="map-list-wrapper">
+        
+        @for (map of getFilteredMaps(); track map.id) {
+        <div class="map-card">
+            
+          <div class="card-icon-box">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 21 18 21 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+          </div>
+
+          <div class="card-info">
+            <h3>{{map.name}}</h3>
+            <p>{{map.description}}</p>
+            <div class="card-tags">
+              @for (tag of map.tags; track $index) {
+                <span class="tag tag-small">{{tag}}</span>
+              }
+            </div>
+          </div>
+          
+          <div class="card-meta">
+            <span class="view-count">{{map.views | number}} views</span>
+            
+            <div class="action-buttons">
+              <button class="btn btn-download" title="Download Map" (click)="OnDownload(map.mapUrl,map.name)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </button>
+              
+              <button class="btn btn-view" (click)="$event.stopPropagation(); viewMap(map.jsonUrl,map.name)">View</button>
+            </div>
+            </div>
+
+        </div>
+        } @empty {
+          <div class="no-results-message">
+            No maps found matching "{{searchText}}". Try a different keyword!
+          </div>
+        }
+
+      </div>
+      
+    </div>
+    
+  </div>
+</div>

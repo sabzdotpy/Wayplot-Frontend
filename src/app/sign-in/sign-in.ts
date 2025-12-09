@@ -28,7 +28,8 @@ export class SignIn {
   }
   signIn(){
     if(this.admin.email==this.user.email && this.admin.password==this.user.password){
-       this.router.navigate(['/admindashboard']);
+      //  this.router.navigate(['/admindashboard']);
+       this.router.navigate(['/userdashboard']);
     }
     else{
       alert("Invalid UserName or Password")

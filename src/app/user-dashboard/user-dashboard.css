@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:host {
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+
+/* --- Global Layout & Background --- */
+.page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  /* Using the cool, dark background from your image */
+  background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop') no-repeat center center/cover;
+  background-attachment: fixed;
+  padding-bottom: 50px;
+}
+
+/* --- Navigation (Reused) --- */
+.glass-nav {
+  width: 100%;
+  height: 70px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 5px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* --- New styles for button group --- */
+.action-buttons {
+  display: flex;
+  gap: 8px; /* Space between Download and View buttons */
+  align-items: center;
+}
+
+/* --- Download Button (Icon only) --- */
+.btn-download {
+  /* Inherit general btn styles if possible, but customize look */
+  background: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 6px; /* Smaller padding for icon button */
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.btn-download:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-download svg {
+  /* Adjust size of the white stroke icon */
+  width: 18px;
+  height: 18px;
+}
+
+/* Important: Adjust the 'View' button to fit the new flex layout */
+.btn-view {
+  /* Keep your existing .btn-view styles, but ensure padding/height match */
+  padding: 8px 15px; 
+}
+.nav-brand .badge {
+  font-size: 0.7rem;
+  background: rgba(217, 4, 69, 0.5); /* Pink badge for user */
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+
+/* --- Main Dashboard Container --- */
+.dashboard-container {
+  max-width: 1600px;
+  margin: 40px auto;
+  padding: 0 40px;
+}
+
+/* --- Glass Panel --- */
+.glass-panel {
+  background: rgba(20, 20, 20, 0.6); 
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.main-panel {
+    /* Allow main content area to handle its own layout */
+    min-height: calc(100vh - 150px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Header and Search Bar --- */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.panel-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  width: 400px;
+}
+
+.search-input {
+  background: none;
+  border: none;
+  color: white;
+  flex-grow: 1;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Map List (The Scrollable Flex Container) --- */
+.map-list-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Allows cards to wrap onto the next line */
+  gap: 25px;
+  padding-right: 15px; /* Space for scrollbar */
+  flex-grow: 1; /* Allow the list to fill remaining space */
+  overflow-y: auto; /* ENABLE SCROLLING FOR THE MAP CARDS */
+  max-height: calc(100vh - 250px); /* Adjust based on header height */
+  padding-bottom: 20px;
+}
+
+/* Scrollbar Customization (Optional, for sleek look) */
+.map-list-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.map-list-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(217, 4, 69, 0.5); /* Pink thumb */
+  border-radius: 4px;
+}
+
+.map-list-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+/* --- Individual Map Card --- */
+.map-card {
+  /* Key Flex Property: Grow 1, Shrink 1, Base 350px min width */
+  flex: 0 0 380px; 
+  max-width: 380px;
+  height: auto;
+  max-height: 250px;
+  min-height: 180px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+}
+
+.map-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.4), /* Existing bottom shadow */
+    0 -3px 8px rgba(255, 255, 255, 0.2) inset;
+  
+}
+
+.card-icon-box {
+  width: 40px;
+  height: 40px;
+  background: #D90445; /* Highlight color */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.card-info {
+  flex-grow: 1;
+}
+
+.card-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.card-info p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.card-tags {
+  margin-top: 10px;
+}
+
+.tag-small {
+  font-size: 0.7rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+  margin-right: 5px;
+  opacity: 0.8;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  margin-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.view-count {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #34d399; /* Green for positive metric */
+}
+
+.btn-view {
+  background: #D90445;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-view:hover {
+  background: #bd033c;
+}
+
+.no-results-message {
+  width: 100%;
+  text-align: center;
+  padding: 50px;
+  font-size: 1.1rem;
+  opacity: 0.6;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+  .search-wrapper {
+    width: 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-container {
+    padding: 0 20px;
+  }
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .search-wrapper {
+    width: 100%;
+  }
+  .map-list-wrapper {
+    /* Base width for smaller screens allows for single column */
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 500px) {
+    .glass-nav {
+        padding: 5px 20px;
+    }
+    .glass-panel {
+        padding: 20px;
+    }
+}
