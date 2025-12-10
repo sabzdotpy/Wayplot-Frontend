@@ -156,3 +156,41 @@ label {
 .legend-end { background-color: green; }
 .legend-route { background-color: blue; }
 .legend-path { background-color: #888; opacity: 0.4; }
+
+::ng-deep .fading-scan-line {
+    stroke-dasharray: 10, 10; /* Makes the line dashed */
+    animation: fadeOut 1.2s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 0.6; stroke-width: 4; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0; stroke-width: 0; }
+}
+
+::ng-deep .flowing-scan-line {
+    stroke-dasharray: 30, 100;
+    animation: flowOutwards 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    pointer-events: none;
+}
+
+/* The animation keyframes */
+@keyframes flowOutwards {
+    0% {
+        opacity: 0;
+        stroke-width: 4;
+        stroke-dashoffset: 130; /* Should roughly match sum of dasharray (30+100) */
+    }
+    10% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.6;
+        stroke-width: 4;
+    }
+    100% {
+        opacity: 0;
+        stroke-width: 1;
+        stroke-dashoffset: 0;
+    }
+}

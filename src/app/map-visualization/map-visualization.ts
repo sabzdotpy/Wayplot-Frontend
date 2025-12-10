@@ -33,6 +33,8 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   // --- ANGULAR STATE (New and Existing) ---
   statusMessage: string = 'Initializing...';
   mapName:string='';
+
+  private scanLayers: L.Polyline[] = []; // Store references to clean them up
   
   // New UI Properties for Route Planning
   navigationMode: string = 'shortest'; // Bound to radio buttons
@@ -399,22 +401,28 @@ private handleLocationError(error: GeolocationPositionError): void {
       return;
     }
 
-    this.statusMessage = `Calculating ${this.navigationMode} path...`;
-    
-    // Dispatch to the correct algorithm based on selection
-    switch (this.navigationMode) {
-      case 'shortest':
-        this.runShortestPath(this.startNodeId, this.endNodeId);
-        break;
-      case 'energy_efficient':
-        this.runEnergyEfficientPath(this.startNodeId, this.endNodeId);
-        break;
-      case 'least_turn':
-        this.runLeastTurnPath(this.startNodeId, this.endNodeId);
-        break;
-      default:
-        this.runShortestPath(this.startNodeId, this.endNodeId); // Fallback
-    }
+    // 1. Trigger Visual "Scanning" Effect
+    this.statusMessage = 'Analyzing network connectivity...';
+    this.animateScanningEffect(this.startNodeId);
+
+    // 2. Delay the actual Math calculation to let the animation play out
+    setTimeout(() => {
+        this.statusMessage = `Calculating ${this.navigationMode} path...`;
+        
+        switch (this.navigationMode) {
+            case 'shortest':
+                this.runShortestPath(this.startNodeId!, this.endNodeId!);
+                break;
+            case 'energy_efficient':
+                this.runEnergyEfficientPath(this.startNodeId!, this.endNodeId!);
+                break;
+            case 'least_turn':
+                this.runLeastTurnPath(this.startNodeId!, this.endNodeId!);
+                break;
+            default:
+                this.runShortestPath(this.startNodeId!, this.endNodeId!);
+        }
+    }, 1500);
   }
 
   // --- ROUTING DISPATCHER METHODS ---
@@ -504,7 +512,6 @@ private handleLocationError(error: GeolocationPositionError): void {
   private reconstructPath(previous: { [key: string]: string | null }, totalDist: number, endNodeId: number): void {
     const endNodeString = endNodeId.toString();
     
-    // Check for "No path found"
     if (previous[endNodeString] === null && this.startNodeId !== endNodeId) { 
         this.statusMessage = "No path found (Roads not connected?)";
         this.cd.detectChanges();
@@ -519,23 +526,119 @@ private handleLocationError(error: GeolocationPositionError): void {
     }
     path.reverse();
 
-    // Draw Path
     const latlngs = path.map(id => {
         const index = parseInt(id, 10);
         const n = this.graphData.nodes[index];
-        return [n.lat, n.lon];
+        return [n.lat, n.lon] as [number, number];
     });
 
     if (this.pathPolyline) this.map.removeLayer(this.pathPolyline);
-    // Cast to L.LatLngExpression[] to satisfy Leaflet types for the path segments
-    this.pathPolyline = L.polyline(latlngs as L.LatLngExpression[], { color: 'blue', weight: 5 }).addTo(this.map);
     
-    // Zoom to fit the new path bounds
-    this.map.fitBounds(this.pathPolyline.getBounds());
+    this.pathPolyline = L.polyline(latlngs as L.LatLngExpression[], { 
+        color: 'blue', 
+        weight: 5,
+        opacity: 0 // start hidden
+    }).addTo(this.map);
     
-    // Set final distance status
     this.statusMessage = `<b>Path Found!</b><br>Mode: ${this.navigationMode} | Distance: ${Math.round(totalDist)} meters`;
-    this.cd.detectChanges(); // Final UI update
+    this.cd.detectChanges();
+
+    this.animatePolylinePath(this.pathPolyline);
+  }
+
+  private animatePolylinePath(polyline: L.Polyline): void {
+      const pathElement = polyline.getElement() as SVGPathElement | undefined;
+      
+      if (!pathElement) {
+          polyline.setStyle({ opacity: 1 });
+          this.triggerZoom(polyline);
+          return;
+      }
+
+      const length = pathElement.getTotalLength();
+      pathElement.style.strokeDasharray = `${length} ${length}`;
+      pathElement.style.strokeDashoffset = `${length}`;
+
+      polyline.setStyle({ opacity: 1 });
+      
+      pathElement.getBoundingClientRect();
+
+      pathElement.style.transition = 'stroke-dashoffset 1s cubic-bezier(1, 0.23, 0.92, 0.96)';
+      pathElement.style.strokeDashoffset = '0';
+
+      setTimeout(() => {
+          pathElement.style.strokeDasharray = 'none';
+          pathElement.style.strokeDashoffset = 'none';
+          pathElement.style.transition = 'none';
+          
+          this.triggerZoom(polyline);
+      }, 1600);
+  }
+
+  private triggerZoom(polyline: L.Polyline): void {
+       this.map.flyToBounds(polyline.getBounds(), {
+           padding: [50, 50],
+           duration: 2,
+           easeLinearity: 0.5
+       });
+  }
+
+  private animateScanningEffect(startNodeId: number): void {
+    this.scanLayers.forEach(l => this.map.removeLayer(l));
+    this.scanLayers = [];
+
+    const startNode = this.graphData.nodes[startNodeId];
+    const addedNeighborIds = new Set<number>();
+
+    // 1. Find immediate neighbors
+    this.graphData.edges.forEach(edge => {
+        if (edge.u === startNodeId && !addedNeighborIds.has(edge.v)) {
+             this.drawFlowingLine(startNode, this.graphData.nodes[edge.v]);
+             addedNeighborIds.add(edge.v);
+        }
+        else if (edge.v === startNodeId && !addedNeighborIds.has(edge.u)) {
+             this.drawFlowingLine(startNode, this.graphData.nodes[edge.u]);
+             addedNeighborIds.add(edge.u);
+        }
+    });
+
+    setTimeout(() => {
+        this.scanLayers.forEach(l => this.map.removeLayer(l));
+        this.scanLayers = [];
+    }, 1500);
+  }
+
+  private drawFlowingLine(startNode: Node, neighborNode: Node): void {
+       // Calculate a point far beyond the actual neighbor (e.g., 3x the distance)
+       // to make the line look long.
+       const farPoint = this.extrapolatePoint(
+           startNode.lat, startNode.lon,
+           neighborNode.lat, neighborNode.lon,
+           2.0
+       );
+
+      const line = L.polyline(
+          [[startNode.lat, startNode.lon], farPoint],
+          {
+              color: '#2b5bcc90', // Deep Sky Blue for better visibility
+              weight: 6, // Initial weight before CSS animation takes over
+              className: 'flowing-scan-line', // Applies the CSS dash animation
+              interactive: false // Important: ensure it doesn't catch clicks
+          }
+      ).addTo(this.map);
+
+      this.scanLayers.push(line);
+  }
+
+  private extrapolatePoint(startLat: number, startLon: number, endLat: number, endLon: number, multiplier: number): L.LatLngExpression {
+    const latDiff = endLat - startLat;
+    const lonDiff = endLon - startLon;
+
+    // simple linear extrapolation (sufficient for visual effect on small scales)
+    const newLat = startLat + (latDiff * multiplier);
+    const newLon = startLon + (lonDiff * multiplier);
+
+    return [newLat, newLon];
   }
 }
 
