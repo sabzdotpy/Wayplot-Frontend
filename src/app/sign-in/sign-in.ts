@@ -28,19 +28,28 @@ export class SignIn {
     password: '',
   };
   async signIn() {
-    let res = await axios.post('/Auth/login', {
-      email: this.user.email,
-      password: this.user.password,
-    });
-    console.log(res.data);
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('userId', res.data.userId);
-    localStorage.setItem('role', res.data.role);
+    try {
+      let res = await axios.post('/Auth/login', {
+        email: this.user.email,
+        password: this.user.password,
+      });
+      console.log(res.data);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userId', res.data.userId);
+      localStorage.setItem('role', res.data.role);
 
-    if (res.data.isSuccess) {
-      this.router.navigate(['/userdashboard']);
-    } else {
-      alert('Invalid UserName or Password');
+      if (res.data.isSuccess) {
+        this.router.navigate(['/userdashboard']);
+      } else {
+        alert('Invalid UserName or Password');
+      }
+    } catch (err: any) {
+      if (err.response.data.errorMessage) {
+        alert(err.response.data.errorMessage);
+        return;
+      }
+      alert('An error occurred during sign-in. Please try again later.');
+      console.error('Sign-in error:', err);
     }
   }
 }

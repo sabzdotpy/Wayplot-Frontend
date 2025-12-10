@@ -20,7 +20,7 @@ export class UserDashboard implements OnInit{
   // Mock data structure for the user's maps
   // Note: 'tags' are used for extra search filter possibilities
   mockMaps = [
-    { id: 101, name: 'College Campus', description: 'A challenging 12km hike with scenic views.', views: 350, tags: ['Hike', 'Challenging', 'Mountain'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764950417/campus_full_walk_nhb8rq.json',mapUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764500503/rqp0jja3obhnqpizz1qq.gpx'},
+    { id: 101, name: 'Kalasalingam University', description: 'Live walking map of kalasalingam university. Captured by TrioVerse.', views: 350, tags: ['Campus', 'Walk', 'Own'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764950417/campus_full_walk_nhb8rq.json',mapUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764500503/rqp0jja3obhnqpizz1qq.gpx'},
     { id: 102, name: 'Downtown Bike Lanes', description: 'Optimized route for city commuting and sightseeing.', views: 1200, tags: ['Bike', 'City', 'Commute'], jsonUrl: '',mapUrl:'' },
     { id: 103, name: 'Historical Walking Tour', description: 'Points of interest across the old district.', views: 98, tags: ['Walk', 'History', 'City'], jsonUrl: 'map-icon-walk.svg',mapUrl:'' },
     { id: 104, name: 'Coastal Scenic Drive', description: 'A popular driving route along the Pacific coast.', views: 890, tags: ['Drive', 'Scenic', 'Coastal'], jsonUrl: 'map-icon-drive.svg',mapUrl:'' },

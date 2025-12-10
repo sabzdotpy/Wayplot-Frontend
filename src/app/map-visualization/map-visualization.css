@@ -94,6 +94,7 @@ label {
     border-radius: 4px;
     font-size: 1.1em;
     cursor: pointer;
+    border-radius: .8rem;
 }
 
 .calculate-btn:disabled {
@@ -110,6 +111,7 @@ label {
     border-radius: 4px;
     margin-top: 10px;
     cursor: pointer;
+    border-radius: .8rem;
 }
 
 /* Navigation Modes */
@@ -170,7 +172,7 @@ label {
 
 ::ng-deep .flowing-scan-line {
     stroke-dasharray: 30, 100;
-    animation: flowOutwards 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    animation: flowOutwards 1.5s cubic-bezier(0.25, 0.1, 0.85, 0.19) forwards;
     pointer-events: none;
 }
 

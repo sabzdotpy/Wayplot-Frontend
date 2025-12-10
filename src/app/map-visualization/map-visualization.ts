@@ -218,7 +218,7 @@ private trackingIcon = L.icon({
         this.endMarker = L.marker(markerLatLon, { title: 'End', icon: this.endIcon }).addTo(this.map);
         
         this.endLocationText = `${nearestNode.lat.toFixed(5)}, ${nearestNode.lon.toFixed(5)}`;
-        this.statusMessage = 'End set. Press <b>Calculate Route</b>.';
+        this.statusMessage = 'Ready. Press <b>Calculate Route</b>.';
         
     } 
     // 2. SET MANUAL START POINT (Only runs if NO Start point is set AND tracking is OFF)
@@ -402,7 +402,7 @@ private handleLocationError(error: GeolocationPositionError): void {
     }
 
     // 1. Trigger Visual "Scanning" Effect
-    this.statusMessage = 'Analyzing network connectivity...';
+    this.statusMessage = 'Beginning path calculation...';
     this.animateScanningEffect(this.startNodeId);
 
     // 2. Delay the actual Math calculation to let the animation play out
