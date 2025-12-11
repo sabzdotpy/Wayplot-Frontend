@@ -471,11 +471,21 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.pathPolyline) this.map.removeLayer(this.pathPolyline);
 
+    let color;
+    if (this.navigationMode === 'shortest') {
+      color = 'blue';
+    }
+    else if (this.navigationMode === 'least_turn') {
+      color = 'green';
+    } else {
+      color = 'red';
+    }
+
     // Draw the static route line (initially invisible)
     this.pathPolyline = L.polyline(pathCoords as L.LatLngExpression[], {
-      color: 'blue', // Match the blue line in your desired image
+      color: color,
       weight: 5,
-      opacity: 0, // Start invisible for animation
+      opacity: 0,
     }).addTo(this.map);
 
     this.animatePolylinePath(this.pathPolyline);

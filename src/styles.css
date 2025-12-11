@@ -1,4 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../node_modules/ngx-toastr/toastr.css';
+
+/* custom toast styles */
+
+.toast,
+.ngx-toastr {
+  box-shadow: none !important;
+  border-radius: 0.5rem !important;
+  animation: toast-slide-in 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+.toast.slide-in,
+.ngx-toastr.slide-in {
+  animation: toast-slide-in 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+.toast.slide-out,
+.ngx-toastr.slide-out {
+  animation: toast-slide-out 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+}
 
 html, body {
   margin: 0;

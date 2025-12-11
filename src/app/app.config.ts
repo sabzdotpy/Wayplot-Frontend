@@ -8,6 +8,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../Environment/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 
@@ -29,5 +31,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideAuth(() => getAuth()),
+    provideToastr(),
+    provideAnimations(),
   ],
 };
