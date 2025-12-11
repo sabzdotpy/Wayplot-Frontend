@@ -26,29 +26,58 @@ export class AdmimDashboard {
 
   map1: MapData = {
     id: 1,
-    name: 'City Map',
+    name: 'Campus Map',
     active: true,
     uploadedAt: new Date('2023-01-15'),
-    url: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764500503/rqp0jja3obhnqpizz1qq.gpx',
+    gpx_url: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
+    json_url:'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk'
   };
   map2: MapData = {
     id: 2,
-    name: 'Campus Map',
+    name: 'City Map',
     active: false,
     uploadedAt: new Date('2023-01-15'),
-    url: 'assets/maps/city-map.png',
+    gpx_url: 'assets/maps/city-map.png',
+    json_url:''
   };
   map3: MapData = {
     id: 3,
     name: 'Warehouse Map',
     active: true,
     uploadedAt: new Date('2023-01-15'),
-    url: 'assets/maps/city-map.png',
+    gpx_url: 'assets/maps/city-map.png',
+    json_url:''
   };
 
   
   openDialog(){
-    this.dialog.open(UploadDialog)
+   const dialogRef = this.dialog.open(UploadDialog)
+
+    // remove==> after db integration============================================================>
+    dialogRef.afterClosed().subscribe((result: MapData | undefined) => {
+      
+      
+      if (result && result.name && result.json_url) {
+        
+        const newMap:MapData = {
+            id:5,
+            name:result.name,
+            gpx_url:result.gpx_url,
+            active:result.active,
+            json_url:result.json_url,
+            uploadedAt:result.uploadedAt
+        } 
+
+        // 3. Add the new map to the existing array
+        this.maps.unshift(newMap); // Adds to the beginning of the list
+        
+        console.log('New map added to dashboard list:', newMap);
+        
+      } else if (result) {
+        // Handle case where dialog closed but didn't return complete data (e.g., failed upload, but dialog closed)
+        console.warn('Dialog closed, but no complete map data returned.');
+      }
+    });
   }
 
   activeMenuId:number|null=null;
@@ -63,11 +92,11 @@ export class AdmimDashboard {
  
   OnDownload(map:MapData){
     this.activeMenuId=null;
-    if (!map.url) {
+    if (!map.gpx_url) {
       alert('No file URL found for this map.');
       return;
     }
-    this.mapService.OnDownloadMap(map.url, map.name);
+    this.mapService.OnDownloadMapFiles(map.gpx_url,map.json_url, map.name);
   }
   OnDelete(map:MapData){
     this.activeMenuId=null;

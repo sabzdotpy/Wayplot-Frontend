@@ -20,15 +20,15 @@ export class UserDashboard implements OnInit{
   // Mock data structure for the user's maps
   // Note: 'tags' are used for extra search filter possibilities
   mockMaps = [
-    { id: 101, name: 'Kalasalingam University', description: 'Live walking map of kalasalingam university. Captured by TrioVerse.', views: 350, tags: ['Campus', 'Walk', 'Own'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764950417/campus_full_walk_nhb8rq.json',mapUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1764500503/rqp0jja3obhnqpizz1qq.gpx'},
-    { id: 102, name: 'Downtown Bike Lanes', description: 'Optimized route for city commuting and sightseeing.', views: 1200, tags: ['Bike', 'City', 'Commute'], jsonUrl: '',mapUrl:'' },
-    { id: 103, name: 'Historical Walking Tour', description: 'Points of interest across the old district.', views: 98, tags: ['Walk', 'History', 'City'], jsonUrl: 'map-icon-walk.svg',mapUrl:'' },
-    { id: 104, name: 'Coastal Scenic Drive', description: 'A popular driving route along the Pacific coast.', views: 890, tags: ['Drive', 'Scenic', 'Coastal'], jsonUrl: 'map-icon-drive.svg',mapUrl:'' },
-    { id: 105, name: 'River Kayak Tour', description: 'Paddlesport route from Miller Dam to Portville.', views: 45, tags: ['Water', 'Kayak', 'River'], jsonUrl: 'map-icon-kayak.svg',mapUrl:'' },
-    { id: 106, name: 'Central Park Jogging Path', description: 'A flat, 5km loop ideal for runners.', views: 210, tags: ['Run', 'Park', 'Easy'], jsonUrl: 'map-icon-run.svg',mapUrl:'' },
-    { id: 107, name: 'Coastal Scenic Drive', description: 'A popular driving route along the Pacific coast.', views: 890, tags: ['Drive', 'Scenic', 'Coastal'], jsonUrl: 'map-icon-drive.svg',mapUrl:'' },
-    { id: 108, name: 'River Kayak Tour', description: 'Paddlesport route from Miller Dam to Portville.', views: 45, tags: ['Water', 'Kayak', 'River'], jsonUrl: 'map-icon-kayak.svg',mapUrl:'' },
-    { id: 109, name: 'Central Park Jogging Path', description: 'A flat, 5km loop ideal for runners.', views: 210, tags: ['Run', 'Park', 'Easy'], jsonUrl: 'map-icon-run.svg',mapUrl:'' },
+    { id: 101, name: 'Kalasalingam University', description: 'Live walking map of kalasalingam university. Captured by TrioVerse.', views: 350, tags: ['Campus', 'Walk', 'Own'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',mapUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9'},
+    { id: 102, name: 'Downtown Bike Lanes', description: 'Optimized route for city commuting and sightseeing.', views: 1200, tags: ['Bike', 'City', 'Commute'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',mapUrl:'' },
+    { id: 103, name: 'Historical Walking Tour', description: 'Points of interest across the old district.', views: 98, tags: ['Walk', 'History', 'City'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',mapUrl:'' },
+    { id: 104, name: 'Coastal Scenic Drive', description: 'A popular driving route along the Pacific coast.', views: 890, tags: ['Drive', 'Scenic', 'Coastal'], jsonUrl: '',mapUrl:'' },
+    { id: 105, name: 'River Kayak Tour', description: 'Paddlesport route from Miller Dam to Portville.', views: 45, tags: ['Water', 'Kayak', 'River'], jsonUrl: '',mapUrl:'' },
+    { id: 106, name: 'Central Park Jogging Path', description: 'A flat, 5km loop ideal for runners.', views: 210, tags: ['Run', 'Park', 'Easy'], jsonUrl: '',mapUrl:'' },
+    { id: 107, name: 'Coastal Scenic Drive', description: 'A popular driving route along the Pacific coast.', views: 890, tags: ['Drive', 'Scenic', 'Coastal'], jsonUrl: '',mapUrl:'' },
+    { id: 108, name: 'River Kayak Tour', description: 'Paddlesport route from Miller Dam to Portville.', views: 45, tags: ['Water', 'Kayak', 'River'], jsonUrl: '',mapUrl:'' },
+    { id: 109, name: 'Central Park Jogging Path', description: 'A flat, 5km loop ideal for runners.', views: 210, tags: ['Run', 'Park', 'Easy'], jsonUrl: '',mapUrl:'' },
   ];
 
   constructor(private mapservice:MapServices,private passingUrl:MapVisualitionUrl,private route:Router) {}
@@ -55,15 +55,19 @@ export class UserDashboard implements OnInit{
   // Placeholder for map action
   viewMap(mapUrl:string,mapName:string) {
     // this.passingUrl.AssignUrl(mapUrl);
+    if(!mapUrl){
+      alert("Sorry, Map url doesn't exist!");
+      return;
+    }
     this.route.navigate(['/viewmap'],{queryParams:{mapname:mapName,mapurl:mapUrl}})
 
   }
 
-  OnDownload(url:string,name:string){
-      if (!url) {
+  OnDownload(gpx_url:string,json_url:string,fileName:string){
+      if (!gpx_url|| !json_url) {
         alert('No file URL found for this map.');
         return;
       }
-      this.mapservice.OnDownloadMap(url, name);
+      this.mapservice.OnDownloadMapFiles(gpx_url,json_url, fileName);
     }
 }

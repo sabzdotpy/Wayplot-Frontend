@@ -159,7 +159,7 @@
 
 .edit-map-form {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
   column-gap: 30px;
   width: 100%;
@@ -178,7 +178,6 @@
 .updates-btn {
   display: flex;
   justify-content: flex-end;
-  /* background-color: #34d399; */
   gap: 45px;
 }
 

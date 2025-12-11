@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
 export interface MapData{
   id: number;
   name: string;
-  url: string;
+  gpx_url: string;
+  json_url: string;
   uploadedAt: Date;
   active: boolean;
 }
@@ -17,7 +18,7 @@ export class MapServices {
 
   constructor(private http:HttpClient){}
 
-  OnDownloadMap(url:string, fileName:string){
+  downloadFile(url:string, fileName:string){
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (blob) => {
         const a=document.createElement('a');
@@ -32,6 +33,15 @@ export class MapServices {
         alert(`Failed to download "${fileName}". Please check the file or try again.`);
       },
     });
+  }
+
+  OnDownloadMapFiles(gpxUrl: string, jsonUrl: string, baseFileName: string): void {
+    
+    this.downloadFile(gpxUrl, `${baseFileName}.gpx`);
+
+    setTimeout(() => {
+        this.downloadFile(jsonUrl, `${baseFileName}.json`);
+    }, 500); 
   }
 
   OnUpdateMap(map:MapData){

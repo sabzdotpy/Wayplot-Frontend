@@ -31,31 +31,31 @@ export class UploadDialog {
       return;
     }
     this.isUploading = true;
-
-    this.cloudinaryservice.uploadGPX(this.selectedFile).subscribe({
+    this.cloudinaryservice.UploadToCloudinary(this.selectedFile).subscribe({
       next:(response)=>{
-        const mapUrl=response.secure_url;
-
-        const mapData:Partial<MapData>={
+        const gpx_url=response.cloudinary_gpx_url;
+        const json_url=response.cloudinary_json_url;
+         const mapData:Partial<MapData>={
           name: this.mapName,
-          url: mapUrl,
+          gpx_url: gpx_url,
+          json_url: json_url,
           uploadedAt: new Date(),
           active: true
         }
-        console.log('File uploaded to Cloudinary:', mapUrl);
-        
-        // call the mongoDb to store the data
         console.log('Map data to be saved:', mapData);
         
+        // <=====================call the sqlserver to store the data
         this.isUploading = false;
         this.dialogRef.close(mapData);
         alert('File uploaded successfully!');
       },
       error:(err)=>{
-        console.error('Cloudinary upload failed', err);
+        console.error('File upload failed', err);
         this.isUploading = false;
+
       }
-    });
+    })
+
     
   }
 }
