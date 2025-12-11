@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 // --- INTERFACE DEFINITIONS ---
 interface Node {
@@ -36,7 +37,7 @@ interface RouteResponse {
 @Component({
   selector: 'app-map-visualization',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ToastrModule],
   templateUrl: './map-visualization.html',
   styleUrl: './map-visualization.css',
 })
@@ -101,7 +102,8 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private cd: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -161,6 +163,14 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
         this.cd.detectChanges();
       },
       error: (err) => {
+        this.toastr.error('Error loading graph data. Please try again later.', 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 5000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+        
         console.error('Failed to load graph data:', err);
         this.statusMessage = 'Error loading JSON. Check console for details.';
         this.cd.detectChanges();
@@ -451,6 +461,13 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
         this.cd.detectChanges();
       },
       error: (err) => {
+        this.toastr.error('Error connecting to routing service. Please try again later.', 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 5000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
         console.error('Routing API Error:', err);
         // Example of better error handling
         const detail =
