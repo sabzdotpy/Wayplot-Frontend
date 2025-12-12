@@ -22,6 +22,7 @@ export class AdmimDashboard {
   constructor(private dialog: MatDialog, private mapService: MapServices, private toastr: ToastrService, private router: Router) {
     this.maps.push(this.map1, this.map2, this.map3);
   }
+
   maps: MapData[] = [];
 
   get totalMaps(): number {
@@ -146,7 +147,15 @@ export class AdmimDashboard {
     this.cancelEdit();
   }
 
-  signOut() {
+  async signOut() {
+    this.toastr.info('Signing you out...', 'Info', {
+      positionClass: 'toast-top-right',
+      timeOut: 3000,
+      progressBar: true,
+      easeTime: 400,
+      toastClass: 'ngx-toastr slide-in',
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     localStorage.clear();
     this.router.navigate(['/signin']);
   }
