@@ -33,7 +33,7 @@ export class AdmimDashboard {
     id: 1,
     name: 'Kalasalingam Campus Map v2',
     active: true,
-    uploadedAt: new Date('2023-01-15'),
+    uploadedAt: new Date('2025-12-12'),
     gpx_url:
       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
     json_url:
@@ -43,7 +43,7 @@ export class AdmimDashboard {
     id: 2,
     name: 'Kalasalingam University',
     active: true,
-    uploadedAt: new Date('2023-01-15'),
+    uploadedAt: new Date('2025-12-10'),
     gpx_url:
       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
     json_url:
@@ -53,7 +53,7 @@ export class AdmimDashboard {
     id: 3,
     name: 'Warehouse Map',
     active: true,
-    uploadedAt: new Date('2023-01-15'),
+    uploadedAt: new Date('2025-12-03'),
     gpx_url: 'assets/maps/city-map.png',
     json_url: '',
   };

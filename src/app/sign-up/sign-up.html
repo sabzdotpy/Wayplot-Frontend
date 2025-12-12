@@ -6,28 +6,30 @@
       <h1 class="title-text">Sign Up</h1>
     </div>
 
-    <form>
+
+    <form (submit)="$event.preventDefault(); signUp()">
       <div class="form-group">
         <label>Name</label>
-        <input type="text" placeholder="Enter your name" class="form-input">
+        <input type="text" placeholder="Enter your name" class="form-input" [(ngModel)]="name" name="name">
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="Enter email" class="form-input">
+        <input type="email" placeholder="Enter email" class="form-input" [(ngModel)]="email" name="email">
       </div>
 
       <div class="form-group">
         <label>Password</label>
-        <input type="password" placeholder="Enter password" class="form-input">
+        <input type="password" placeholder="Enter password" class="form-input" [(ngModel)]="password" name="password">
       </div>
 
       <div class="form-group">
         <label>Confirm Password</label>
-        <input type="password" placeholder="Confirm password" class="form-input">
+        <input type="password" placeholder="Confirm password" class="form-input" [(ngModel)]="confirmPassword" name="confirmPassword">
       </div>
 
-      <button type="button" class="btn btn-signup">Sign Up</button>
+      <button type="submit" class="btn btn-signup" [disabled]="loading">Sign Up</button>
+      <div *ngIf="statusMsg" class="status-msg">{{statusMsg}}</div>
     </form>
 
     <div class="divider">
