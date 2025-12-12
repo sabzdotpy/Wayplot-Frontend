@@ -34,10 +34,12 @@ interface RouteResponse {
   turn_count: number;   
 }
 
+import { NgIf } from '@angular/common';
+
 @Component({
   selector: 'app-map-visualization',
   standalone: true,
-  imports: [FormsModule, ToastrModule],
+  imports: [FormsModule, ToastrModule, NgIf],
   templateUrl: './map-visualization.html',
   styleUrl: './map-visualization.css',
 })
@@ -54,6 +56,11 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   navigationMode: string = 'shortest';
   startLocationText: string = '';
   endLocationText: string = '';
+
+  osmTileUrl: string = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+  googleTileUrl: string = "https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga";
+  currentTile: 'osm' | 'google' = 'osm';
+  private tileLayer!: L.TileLayer;
 
   // --- LEAFLET/GRAPH STATE ---
   private map!: L.Map;
@@ -145,11 +152,38 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   private initMap(): void {
     // Default view, will be overwritten by fitBounds later
     this.map = L.map('map').setView([10.782618989301367, 79.13152400187874], 17);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    this.tileLayer = L.tileLayer(this.osmTileUrl, {
       maxZoom: 19,
-      attribution: '© OpenStreetMap',
-    }).addTo(this.map);
+      attribution: (this.currentTile === 'google') ? '© Google Maps' : '© OpenStreetMap',
+    });
+    this.tileLayer.addTo(this.map);
     this.map.on('click', this.onMapClick.bind(this));
+  }
+
+  public switchTileLayer(): void {
+    if (!this.map || !this.tileLayer) return;
+    this.map.removeLayer(this.tileLayer);
+    if (this.currentTile === 'google') {
+      this.tileLayer = L.tileLayer(this.osmTileUrl, {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap',
+      });
+      this.currentTile = 'osm';
+    } else {
+      this.tileLayer = L.tileLayer(this.googleTileUrl, {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap',
+      });
+      this.currentTile = 'google';
+    }
+    this.drawInitialEdges();
+    this.tileLayer.addTo(this.map);
+    // bring overlays to front after tile switch
+    if (this.pathPolyline) this.pathPolyline.bringToFront();
+    if (this.startMarker) (this.startMarker as any).bringToFront(); // leaflet marker type missing bringToFront
+    if (this.endMarker) (this.endMarker as any).bringToFront();
+    this.scanLayers.forEach(l => l.bringToFront());
+    this.cd.detectChanges();
   }
 
   private loadGraphData(): void {
@@ -202,7 +236,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // Draw edges: Campus Roads (Graph Edges)
-    L.polyline(edgeCoords, { color: '#888', weight: 2, opacity: 0.4 }).addTo(this.map);
+    L.polyline(edgeCoords, { color: (this.currentTile === 'osm' ? '#888' : 'transparent'), weight: 2, opacity: (this.currentTile === 'google' ? 0 : 0.6) }).addTo(this.map);
 
     this.statusMessage = 'Ready. Click map to set <b>Start</b>.';
     this.map.fitBounds([

@@ -66,11 +66,21 @@
             <ul>
                 <li><span class="legend-start"></span> Start Marker</li>
                 <li><span class="legend-end"></span> End Marker</li>
-                <li><span class="legend-route"></span> Calculated Route</li>
+                <li><span class="legend-route"></span> Shortest Route</li>
+                <li><span class="legend-energy"></span> Energy Efficient Route</li>
+                <li><span class="legend-turn"></span> Least Turn Route</li>
                 <li><span class="legend-path"></span> Campus Roads (Graph Edges)</li>
             </ul>
         </div>
     </div>
     
     <div id="map"></div>
+    <button class="fab-layers" (click)="switchTileLayer()" [attr.aria-label]="currentTile === 'google' ? 'Switch to OSM' : 'Switch to Google'">
+        <span class="fab-img-wrap">
+            <img *ngIf="currentTile === 'google'" src="assets/osm_layer.png" alt="OSM Layer" class="fab-img" />
+            <img *ngIf="currentTile === 'osm'" src="assets/g_layer.png" alt="Google Layer" class="fab-img" />
+            <span class="fab-gradient"></span>
+            <span class="fab-label">{{ currentTile === 'google' ? 'OSM' : 'Google' }}</span>
+        </span>
+    </button>
 </div>

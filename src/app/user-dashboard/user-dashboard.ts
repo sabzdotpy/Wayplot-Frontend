@@ -20,6 +20,7 @@ export class UserDashboard implements OnInit{
   // Mock data structure for the user's maps
   // Note: 'tags' are used for extra search filter possibilities
   mockMaps = [
+    { id: 100, name: 'Kalasalingam Campus Map v2', description: 'Live walking map of kalasalingam university v2, More routes and shortcuts. Captured by TrioVerse.', views: 350, tags: ['Campus', 'Walk', 'Own'], jsonUrl: "https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads",mapUrl: "https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c"},
     { id: 101, name: 'Kalasalingam University', description: 'Live walking map of kalasalingam university. Captured by TrioVerse.', views: 350, tags: ['Campus', 'Walk', 'Own'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',mapUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9'},
     { id: 102, name: 'Downtown Bike Lanes', description: 'Optimized route for city commuting and sightseeing.', views: 1200, tags: ['Bike', 'City', 'Commute'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',mapUrl:'' },
     { id: 103, name: 'Historical Walking Tour', description: 'Points of interest across the old district.', views: 98, tags: ['Walk', 'History', 'City'], jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',mapUrl:'' },

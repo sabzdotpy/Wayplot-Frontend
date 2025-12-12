@@ -30,21 +30,23 @@ export class AdmimDashboard {
 
   map1: MapData = {
     id: 1,
-    name: 'Campus Map',
+    name: 'Kalasalingam Campus Map v2',
+    active: true,
+    uploadedAt: new Date('2023-01-15'),
+    gpx_url:
+      'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
+    json_url:
+      'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
+  };
+  map2: MapData = {
+    id: 2,
+    name: 'Kalasalingam University',
     active: true,
     uploadedAt: new Date('2023-01-15'),
     gpx_url:
       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
     json_url:
       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
-  };
-  map2: MapData = {
-    id: 2,
-    name: 'City Map',
-    active: false,
-    uploadedAt: new Date('2023-01-15'),
-    gpx_url: 'assets/maps/city-map.png',
-    json_url: '',
   };
   map3: MapData = {
     id: 3,

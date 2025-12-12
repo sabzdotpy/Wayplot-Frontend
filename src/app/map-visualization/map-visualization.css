@@ -154,10 +154,83 @@ label {
     border-radius: 3px;
 }
 
-.legend-start { background-color: red; }
-.legend-end { background-color: green; }
+.legend-start { background-color: orangered; }
+.legend-end { background-color: greenyellow; }
 .legend-route { background-color: blue; }
 .legend-path { background-color: #888; opacity: 0.4; }
+.legend-energy { background-color: red; }
+.legend-turn { background-color: green; }
+
+/* floating action button for layers */
+
+.fab-layers {
+    position: absolute;
+    right: 1rem;
+    bottom: 1.25rem;
+    z-index: 1001;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: box-shadow 0.2s;
+}
+.fab-layers:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+}
+
+.fab-img-wrap {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #212121b6;
+    background: #fff;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.fab-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.fab-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.5) 100%);
+    z-index: 2;
+}
+.fab-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    text-align: center;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+    letter-spacing: 0.5px;
+    padding-bottom: 4px;
+    pointer-events: none;
+    user-select: none;
+}
+
 
 ::ng-deep .fading-scan-line {
     stroke-dasharray: 10, 10; /* Makes the line dashed */
