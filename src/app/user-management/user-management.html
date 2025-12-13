@@ -1,0 +1,182 @@
+<div class="page-wrapper">
+
+    <nav class="glass-nav">
+        <div class="nav-brand">WAYPLOT <span class="badge admin-badge">ADMIN USERS</span></div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <div class="admin-grid">
+            <div class="glass-panel main-panel-table">
+                <h2>Users</h2>
+
+                <div class="table-scroll-wrapper">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th class="action-header">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (isLoading) {
+                            <tr>
+                                <td colspan="6" class="loading-cell">Loading users...</td>
+                            </tr>
+                            } @else if (users.length === 0) {
+                            <tr>
+                                <td colspan="6" class="loading-cell">No users found.</td>
+                            </tr>
+                            } @else {
+                            @for (user of users; track user.id) {
+                            <tr [class.is-editing]="editingUserId === user.id">
+                                <td>{{ user.id }}</td>
+
+                                <td>
+                                    @if (editingUserId === user.id) {
+                                    <input type="text" class="edit-field" [formControl]="getEditControl(user.id, 'name')">
+                                    } @else {
+                                    {{ user.name }}
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (editingUserId === user.id) {
+                                    <input type="email" class="edit-field" [formControl]="getEditControl(user.id, 'email')">
+                                    } @else {
+                                    {{ user.email }}
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (editingUserId === user.id) {
+                                    <select class="edit-field" [formControl]="getEditControl(user.id, 'role')">
+                                        <option value="SuperAdmin">Super Admin</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Regular">Regular</option>
+                                    </select>
+                                    } @else {
+                                    <span class="role-tag role-{{user.role.toLowerCase()}}">{{ user.role }}</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (editingUserId === user.id) {
+                                    <select id="status" class="edit-field" [formControl]="getEditControl(user.id,'status')">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                        <option value="Disabled">Disabled</option>
+                                        <option value="Banned">Banned</option>
+                                        <option value="Suspended">Suspended</option>
+                                        <option value="Deleted">Deleted</option>
+                                    </select>
+                                    } @else {
+                                    <span>
+                                        {{user.status}}
+                                    </span>
+                                    }
+                                </td>
+
+                                <td class="action-cell">
+                                    @if (editingUserId === user.id) {
+                                    <button class="btn btn-icon-save" (click)="saveEdit(user.id)" title="Save Changes" [disabled]="editForms[user.id].invalid">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            </button>
+                                    <button class="btn btn-icon-cancel" (click)="cancelEdit()" title="Cancel Edit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                    } @else {
+                                    <button class="btn btn-icon-edit" (click)="startEdit(user)" title="Edit User">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="btn btn-icon-delete" (click)="deleteUser(user.id, user.name)" title="Delete User">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                            </button>
+                                    }
+                                </td>
+                            </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-panel side-panel">
+                <h3>Create New User</h3>
+
+                <form [formGroup]="newUserForm" (ngSubmit)="createUser()" class="user-create-form">
+
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" formControlName="name" placeholder="E.g., Jane Doe"
+                            [class.is-invalid]="newF['name'].invalid && newF['name'].touched">
+                        @if (newF['name'].touched && newF['name'].invalid) {
+                        <small class="error-feedback">Name is required.</small>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" formControlName="email" placeholder="E.g., jane@example.com"
+                            [class.is-invalid]="newF['email'].invalid && newF['email'].touched">
+                        @if (newF['email'].touched && newF['email'].invalid) {
+                        <small class="error-feedback">Requires a valid email.</small>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" formControlName="password" placeholder="Min. 6 characters"
+                            [class.is-invalid]="newF['password'].invalid && newF['password'].touched">
+                        @if (newF['password'].touched && newF['password'].invalid) {
+                        <small class="error-feedback">Password must be at least 6 characters.</small>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select id="role" formControlName="role" class="form-select">
+                            <option value="SuperAdmin">Super Admin</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Regular" selected>Regular</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" formControlName="status" class="form-select">
+                            <option value="Active" selected>Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Disabled">Disabled</option>
+                            <option value="Banned">Banned</option>
+                            <option value="Suspended">Suspended</option>
+                            <option value="Deleted">Deleted</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="Userbtn btn-primary btn-full-width" [disabled]="newUserForm.invalid">
+                        <span *ngIf="!isCreating">Create Account</span>
+                        <span *ngIf="isCreating" class="creating-user"><ngx-spinner size="small"[fullScreen]="false"  type="ball-clip-rotate-multiple"></ngx-spinner><span class="loading-text">Creating...</span></span>
+                        
+                    </button>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

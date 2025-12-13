@@ -4,6 +4,7 @@ import { SignUp } from './sign-up/sign-up';
 import { AdmimDashboard } from './admim-dashboard/admim-dashboard';
 import { UserDashboard } from './user-dashboard/user-dashboard';
 import { MapVisualization } from './map-visualization/map-visualization';
+import { UserManagement } from './user-management/user-management';
 
 export const routes: Routes = [
     {path:'signin',component:SignIn},
@@ -12,5 +13,6 @@ export const routes: Routes = [
     {path:'signup',component:SignUp},
     {path:'admindashboard',component:AdmimDashboard},
     {path:'userdashboard',component:UserDashboard},
-    {path:'viewmap',component:MapVisualization}
+    {path:'viewmap',component:MapVisualization},
+    {path:'usermanagement',component:UserManagement}
 ];

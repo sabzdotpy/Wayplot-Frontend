@@ -1,0 +1,263 @@
+/* --- General Glassmorphism Base --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+:host {
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
+/* Background must be defined on a high-level wrapper */
+.page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  /* Use the dark, space-like background */
+  background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop') no-repeat center center/cover;
+  background-attachment: fixed;
+  padding-bottom: 40px;
+}
+
+
+/* Glass Navigation Bar */
+.glass-nav {
+  width: 100%;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.nav-brand {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.badge {
+    font-size: 0.7rem;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+
+/* --- Grid Layout for Main Content (New) --- */
+.dashboard-container {
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 0 40px;
+}
+
+.admin-grid {
+    display: flex;
+    gap: 30px;
+    align-items: start;
+}
+
+/* Side Panel (Create User) - Takes less space */
+.side-panel {
+    flex: 0 0 350px; /* Fixed width for the side panel */
+    padding: 30px;
+    height: fit-content; /* Ensure it only takes the height it needs */
+}
+
+/* Main Table Panel - Takes remaining space */
+.main-panel-table {
+    flex-grow: 1;
+    padding: 30px;
+}
+
+.glass-panel {
+    /* Keep existing glass styles */
+    background: rgba(20, 20, 20, 0.6); 
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: white; /* Highlight 'Create' section title */
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* --- Form Styles (Used in Side Panel) --- */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+.user-create-form input, 
+.user-create-form select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.btn-full-width {
+  margin-top: 20px;
+  background: #D90445; /* Pink/Magenta Theme */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(217, 4, 69, 0.3);
+}
+.Userbtn:hover{
+  background: #bd033c;
+  transform: translateY(-2px);
+}
+
+.Userbtn:disabled{
+  cursor: not-allowed;
+  background-color:#D90445 ;
+  transform: none;
+}
+.creating-user{
+  display: flex;
+    /* align-items: center;  */
+    justify-content: center; /* Horizontally center the whole block */
+    height: 100%;
+    width: 100%;
+    gap: 7px;
+}
+.creating-user ngx-spinner {
+    margin-right: 12px; /* Add a small space between spinner and text */
+}
+.creating-user ngx-spinner .full-screen {
+  position: relative;
+    height: 2px !important;
+    width: 2px !important;
+}
+/* --- Table Styles (Existing, with minor tweaks) --- */
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+  max-height: calc(100vh - 180px); /* Adjusted for the new layout */
+  overflow-y: auto; 
+  padding-bottom: 10px;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 800px;
+}
+
+.user-table th, .user-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9rem;
+}
+
+.user-table thead th {
+  background: rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+/* Alignment for Action Header */
+.action-header {
+    text-align: center !important;
+}
+
+
+/* --- Action Icon Buttons (New) --- */
+
+.action-cell {
+  display: flex;
+  justify-content: center; /* Center icons in the action column */
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-icon-edit, .btn-icon-delete, .btn-icon-save, .btn-icon-cancel {
+    background: transparent;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-icon-edit svg,
+.btn-icon-delete svg,
+.btn-icon-save svg,
+.btn-icon-cancel svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Edit/Pencil Icon */
+.btn-icon-edit { color: #0096FF; }
+.btn-icon-edit:hover { background: rgba(0, 150, 255, 0.1); }
+
+/* Delete/Dustbin Icon */
+.btn-icon-delete { color: #dc3545; }
+.btn-icon-delete:hover { background: rgba(220, 53, 69, 0.1); }
+
+/* Save/Checkmark Icon */
+.btn-icon-save { color: #34d399; }
+.btn-icon-save:hover { background: rgba(52, 211, 153, 0.1); }
+
+/* Cancel/X Icon */
+.btn-icon-cancel { color: #6c757d; }
+.btn-icon-cancel:hover { background: rgba(108, 117, 125, 0.1); }
+
+.edit-field{
+  padding: 6px;
+  padding-left: 5px;
+  border-radius: 6px;
+  outline: none;
+  border: none;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1000px) {
+    .admin-grid {
+        flex-direction: column; /* Stack panels vertically on smaller screens */
+    }
+    .side-panel {
+        flex: 1 1 100%; /* Side panel takes full width */
+        max-width: 100%;
+    }
+}
