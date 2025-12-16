@@ -14,7 +14,7 @@
                     <div class="linechart-inner-content"> <ngx-charts-line-chart [view]="[1200, 400]"
                             [scheme]="colorScheme" [results]="userGrowthData" [xAxis]="true" [yAxis]="true"
                             [showGridLines]="true" [legend]="true" xAxisLabel="Month" yAxisLabel="User Count"
-                            legendTitle="Users">
+                            legendTitle="Users" >
                         </ngx-charts-line-chart>
                     </div>
                 </div>
@@ -23,8 +23,8 @@
             <div class="div2">
                 <div class="glass-panel chart-bar-monthly">
                     <h2>Monthly Map Generation</h2>
-                    <div class="chart-scroll-wrapper">
-                        <div class="chart-inner-content-bar"> <ngx-charts-bar-vertical [view]="[615, 380]"
+                    <div class="barchart-container-scroll">
+                        <div class="barchart-inner-content"> <ngx-charts-bar-vertical [view]="[615, 380]"
                                 [scheme]="colorrScheme" [results]="mapGenerationData" [xAxis]="true" [yAxis]="true"
                                 [showGridLines]="false" xAxisLabel="Month" yAxisLabel="Generations" [gradient]="true"
                                 [scrollLeft]="true">
@@ -34,13 +34,14 @@
                 </div>
                 <div class="glass-panel chart-panel pieparent">
                     <h2>User Role Distribution</h2>
-                    <div class="piechart">
+                    <div class="piechart-container-scroll">
                         <div class="piechart-inner-content"> <ngx-charts-pie-chart [view]="[615, 380]"
                                 [scheme]="colorScheme" [results]="roleDistributionData" [legend]="true" [labels]="true"
-                                [doughnut]="true" [arcWidth]="0.3" legendTitle="Roles">
+                                [doughnut]="true" [arcWidth]="0.3" legendTitle="Roles" >
                             </ngx-charts-pie-chart>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -48,18 +49,22 @@
 
 
             <div class="div3">
-                <div class="glass-panel chart-panel downloadVSview">
-                <h2>Downloads vs Views</h2>
-                <ngx-charts-area-chart [view]="[950, 200]" [scheme]="colorScheme" [results]="downloadsVsViewsData"
-                    [xAxis]="true" [yAxis]="true" [showGridLines]="false" [legend]="true" yAxisLabel="Count" >
-                </ngx-charts-area-chart>
-            </div>
-            <div>
-                <div class="glass-panel totalMaps">
-                    <h2>Total maps</h2>
-                    <h3>4</h3>
+                <div class="glass-panel chart-views downloadVSview">
+                    <h2>Downloads vs Views</h2>
+                    <div class="areachart-container-scroll">
+                        <div class="areachart-inner-content"><ngx-charts-area-chart [view]="[950, 200]" [scheme]="colorScheme" [results]="downloadsVsViewsData"
+                        [xAxis]="true" [yAxis]="true" [showGridLines]="false" [legend]="true" yAxisLabel="Count" legendTitle="Data">
+                    </ngx-charts-area-chart>
+                        </div>
+                    </div>
+                    
                 </div>
-            </div>
+                <div>
+                    <div class="glass-panel totalMaps">
+                        <h2>Total maps</h2>
+                        <h3>4</h3>
+                    </div>
+                </div>
             </div>
 
 

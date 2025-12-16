@@ -6,6 +6,7 @@
     color: #fff;
 }
 
+
 /* --- Background & Layout (Unchanged) --- */
 .page-wrapper {
     min-height: 100vh;
@@ -63,27 +64,29 @@
 }
 
 .glass-panel {
-    background: rgba(10, 0, 30, 0.45); /* Slightly darker/more saturated background */
-    backdrop-filter: blur(25px); /* INCREASE THE BLUR for a stronger glass effect */
+    background: rgba(10, 0, 30, 0.45); 
+    backdrop-filter: blur(25px); 
     -webkit-backdrop-filter: blur(25px); 
-    border-radius: 25px; /* Slightly larger radius for a modern feel */
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly thicker/more visible border */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Deeper shadow for elevation */
-    padding: 30px; /* Increased padding inside the panel */
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); 
+    padding: 30px;
     color: white;
-    transition: transform 0.2s; /* Add subtle hover transition */
+    transition: transform 0.2s; 
     margin-bottom: 30px;
 }
 
 .glass-panel:hover {
-    transform: translateY(-5px); /* Lift panel on hover */
+    transform: translateY(-5px);
 }
 .div2{
     display: flex;
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
-    gap: 46px;
+    gap: 30px;
+    width: 100%;
+    box-sizing: border-box;
     
 }
 .div3{
@@ -146,5 +149,77 @@ ngx-charts-line-chart {
 }
 
 
+.chart-bar-monthly{
+    width: 48%;
+    box-sizing: border-box;
+}
 
+.barchart-container-scroll{
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
 
+}
+.barchart-inner-content{
+    min-width: 700px;
+    width: fit-content;
+}
+ngx-charts-bar-vertical{
+    display: block;
+    width: 100%;
+    height: 400px;
+
+}
+.chart-panel{
+    width: 48%;
+    box-sizing: border-box;
+}
+.piechart-container-scroll{
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.piechart-inner-content{
+    min-width: 700px;
+    width: fit-content;
+}
+ngx-charts-pie-chart{
+    display: block;
+    width: 100%;
+    height: 400px;
+}
+
+.chart-views{
+    width: 68%;
+    box-sizing: border-box;
+}
+.areachart-container-scroll{
+    max-width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+.areachart-inner-content{
+    min-width: 700px;
+    width: fit-content;
+}
+ngx-charts-area-chart{
+    display: block;
+    width: 100%;
+    height: 400px;
+
+}
+
+@media (min-width: 400px) and (max-width: 950px) {
+    .chart-bar-monthly{
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .chart-panel{
+    width: 100%;
+    box-sizing: border-box;
+    }
+    .chart-views{
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

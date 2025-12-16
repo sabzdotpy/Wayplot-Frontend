@@ -1,4 +1,4 @@
-import { Component, OnInit ,HostListener} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 interface ChartData {
   name: string;
@@ -19,20 +19,20 @@ interface SeriesData {
 export class AnalysisDashboard implements OnInit {
   // --- Chart Configuration ---
 
-responsiveView: [number, number] | null = [700, 400];
+// responsiveView: [number, number] | null = [700, 400];
   colorScheme: any = { 
     name: 'customScheme', // ngx-charts often requires a name property
     selectable: true,
-    group: 'ordinal', // Or whatever group fits
+    group: 'ordinal', 
     domain: ['#8c26de', '#3f51b5', '#4caf50', '#ff9800', '#f44336']
   };
   colorrScheme: any = { 
-    name: 'customScheme', // ngx-charts often requires a name property
+    name: 'customScheme', 
     selectable: true,
-    group: 'ordinal', // Or whatever group fits
+    group: 'ordinal', 
     domain: ['#f44336']
   };
-  // --- Data Definitions ---
+
   
   // 1. User Growth and Activity (Line Chart)
  userGrowthData: SeriesData[] = [
@@ -95,14 +95,18 @@ responsiveView: [number, number] | null = [700, 400];
       name: 'Total Views',
       series: [
         { name: 'Jan', value: 25000 }, { name: 'Feb', value: 30000 }, { name: 'Mar', value: 35000 },
-        { name: 'Apr', value: 32000 }, { name: 'May', value: 40000 }, { name: 'Jun', value: 45000 }
+        { name: 'Apr', value: 32000 }, { name: 'May', value: 40000 }, { name: 'Jun', value: 45000 },
+        { name: 'Jul', value: 50000 }, { name: 'Aug', value: 55000 }, { name: 'Sep', value: 60000 },
+        { name: 'Oct', value: 65000 }, { name: 'Nov', value: 70000 }, { name: 'Dec', value: 75000 }
       ]
     },
     {
       name: 'Downloads',
       series: [
         { name: 'Jan', value: 2500 }, { name: 'Feb', value: 3100 }, { name: 'Mar', value: 3900 },
-        { name: 'Apr', value: 3500 }, { name: 'May', value: 5000 }, { name: 'Jun', value: 5500 }
+        { name: 'Apr', value: 3500 }, { name: 'May', value: 5000 }, { name: 'Jun', value: 5500 },
+        { name: 'Jul', value: 6000 }, { name: 'Aug', value: 6500 }, { name: 'Sep', value: 7000 },
+        { name: 'Oct', value: 7500 }, { name: 'Nov', value: 8000 }, { name: 'Dec', value: 8500 }
       ]
     }
   ];
@@ -120,10 +124,5 @@ responsiveView: [number, number] | null = [700, 400];
     // Initialization logic, if any.
   }
   
-
-@HostListener('window:resize')
-onResize() {
-  this.userGrowthData = [...this.userGrowthData];
-}
 
 }
