@@ -1,0 +1,69 @@
+<div class="page-wrapper">
+
+    <nav class="glass-nav">
+        <div class="nav-brand">WAYPLOT <span class="badge admin-badge">ADMIN INSIGHTS</span></div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <div class="analysis-grid">
+
+            <div class="glass-panel chart-full-width lineparent">
+                <h2>User Growth & Activity</h2>
+                <div class="linechart-container-scroll">
+                    <div class="linechart-inner-content"> <ngx-charts-line-chart [view]="[1200, 400]"
+                            [scheme]="colorScheme" [results]="userGrowthData" [xAxis]="true" [yAxis]="true"
+                            [showGridLines]="true" [legend]="true" xAxisLabel="Month" yAxisLabel="User Count"
+                            legendTitle="Users">
+                        </ngx-charts-line-chart>
+                    </div>
+                </div>
+            </div>
+
+            <div class="div2">
+                <div class="glass-panel chart-bar-monthly">
+                    <h2>Monthly Map Generation</h2>
+                    <div class="chart-scroll-wrapper">
+                        <div class="chart-inner-content-bar"> <ngx-charts-bar-vertical [view]="[615, 380]"
+                                [scheme]="colorrScheme" [results]="mapGenerationData" [xAxis]="true" [yAxis]="true"
+                                [showGridLines]="false" xAxisLabel="Month" yAxisLabel="Generations" [gradient]="true"
+                                [scrollLeft]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel chart-panel pieparent">
+                    <h2>User Role Distribution</h2>
+                    <div class="piechart">
+                        <div class="piechart-inner-content"> <ngx-charts-pie-chart [view]="[615, 380]"
+                                [scheme]="colorScheme" [results]="roleDistributionData" [legend]="true" [labels]="true"
+                                [doughnut]="true" [arcWidth]="0.3" legendTitle="Roles">
+                            </ngx-charts-pie-chart>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="div3">
+                <div class="glass-panel chart-panel downloadVSview">
+                <h2>Downloads vs Views</h2>
+                <ngx-charts-area-chart [view]="[950, 200]" [scheme]="colorScheme" [results]="downloadsVsViewsData"
+                    [xAxis]="true" [yAxis]="true" [showGridLines]="false" [legend]="true" yAxisLabel="Count" >
+                </ngx-charts-area-chart>
+            </div>
+            <div>
+                <div class="glass-panel totalMaps">
+                    <h2>Total maps</h2>
+                    <h3>4</h3>
+                </div>
+            </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
