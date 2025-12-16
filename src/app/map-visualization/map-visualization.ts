@@ -47,7 +47,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   // --- CONFIGURATION & CONSTANTS ---
   private CLOUDINARY_JSON_URL = '';
   // Set this to your Python backend URL for routing
-  private readonly API_URL = 'http://127.0.0.1:8000/route';
+  private readonly API_URL = 'http://localhost:8000/routing/calculate/';
 
   // --- ANGULAR STATE (Bound to HTML) ---
   statusMessage: string = 'Initializing...';

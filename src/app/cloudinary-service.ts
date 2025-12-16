@@ -18,7 +18,7 @@ export class CloudinaryService {
 
   constructor(private http:HttpClient){}
 
-  private apiUrl='http://127.0.0.1:8000/convert-gpx'
+  private apiUrl='http://localhost:8000/routing/upload_gpx/'
   
   UploadToCloudinary(file:File):Observable<GpxUploadResponse>{
     const formData = new FormData();
