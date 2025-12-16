@@ -16,7 +16,7 @@ interface SeriesData {
   styleUrl: './analysis-dashboard.css',
 })
 
-export class AnalysisDashboard implements OnInit {
+export class AnalyticsDashboard implements OnInit {
   // --- Chart Configuration ---
 
 // responsiveView: [number, number] | null = [700, 400];

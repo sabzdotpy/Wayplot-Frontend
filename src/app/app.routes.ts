@@ -5,7 +5,7 @@ import { AdmimDashboard } from './admim-dashboard/admim-dashboard';
 import { UserDashboard } from './user-dashboard/user-dashboard';
 import { MapVisualization } from './map-visualization/map-visualization';
 import { UserManagement } from './user-management/user-management';
-import { AnalysisDashboard } from './analysis-dashboard/analysis-dashboard';
+import { AnalyticsDashboard } from './analysis-dashboard/analysis-dashboard';
 
 export const routes: Routes = [
     {path:'signin',component:SignIn},
@@ -16,5 +16,5 @@ export const routes: Routes = [
     {path:'userdashboard',component:UserDashboard},
     {path:'viewmap',component:MapVisualization},
     {path:'usermanagement',component:UserManagement},
-    {path:'analysisdashboard',component:AnalysisDashboard},
+    {path:'analyticsdashboard',component:AnalyticsDashboard},
 ];
