@@ -5,7 +5,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CloudinaryService } from '../cloudinary-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MapData } from '../map-services';
+import { MapData, MapServices } from '../map-services';
+import { switchMap, catchError, finalize } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-upload-dialog',
@@ -16,46 +18,88 @@ import { MapData } from '../map-services';
 })
 export class UploadDialog {
   mapName:string='';
+  mapDescription:string='';
+  visibility:string='PRIVATE';
   selectedFile:File| null=null;
   isUploading:boolean=false;
 
-  constructor(private cloudinaryservice:CloudinaryService,private dialogRef: MatDialogRef<UploadDialog>){}
+  constructor(private cloudinaryservice:CloudinaryService,private dialogRef: MatDialogRef<UploadDialog>,private mapservices:MapServices){}
 
   onSelectedFile(event:any){
     this.selectedFile=event.target.files[0];
   }
 
   onSubmit(){
-    if(!this.selectedFile|| !this.mapName){
+    if(!this.selectedFile|| !this.mapName|| !this.mapDescription){
       alert('Please provide a name and a file.');
       return;
     }
     this.isUploading = true;
-    this.cloudinaryservice.UploadToCloudinary(this.selectedFile).subscribe({
-      next:(response)=>{
-        const gpx_url=response.cloudinary_gpx_url;
-        const json_url=response.cloudinary_json_url;
-         const mapData:Partial<MapData>={
-          name: this.mapName,
-          gpx_url: gpx_url,
-          json_url: json_url,
-          uploadedAt: new Date(),
-          active: true
-        }
-        console.log('Map data to be saved:', mapData);
-        
-        // <=====================call the sqlserver to store the data
-        this.isUploading = false;
-        this.dialogRef.close(mapData);
-        alert('File uploaded successfully!');
-      },
-      error:(err)=>{
-        console.error('File upload failed', err);
-        this.isUploading = false;
+    this.cloudinaryservice.UploadToCloudinary(this.selectedFile).pipe(
+      switchMap((response) => {
+        const gpx_url = response.cloudinary_gpx_url;
+        const json_url = response.cloudinary_json_url;
 
-      }
+        const mapData: Partial<MapData> = {
+        name: this.mapName,
+        description: this.mapDescription,
+        gpxUrl: gpx_url,
+        jsonUrl: json_url,
+        visibility: this.visibility,
+      };
+      console.log('Map data to be saved:', mapData);
+
+      // 3. Return the Observable for the DB save
+      return this.mapservices.UploadMapDB(mapData);
+      }),catchError((error) => {
+        console.error('Upload Process Failed:', error);
+        alert('Upload failed: ' + (error.message || 'Check console for details.'));
+        // Return a new error Observable to keep the chain going/halt gracefully
+        return throwError(() => new Error('Upload process failed.'));
+    }),
+    finalize(() => {
+        this.isUploading = false; // Turn off loading indicator
     })
+    ).subscribe({
+    next: (dbResponse) => {
+      alert('File uploaded and data saved successfully!');
+      this.dialogRef.close(dbResponse);
+    },
+    error: (finalError) => {
+
+        console.log('Subscription terminated by error.');
+    }
+  });
+
+
+
+    // .subscribe({
+    //   next:(response)=>{
+    //     const gpx_url=response.cloudinary_gpx_url;
+    //     const json_url=response.cloudinary_json_url;
+    //      const mapData:Partial<MapData>={
+    //       name: this.mapName,
+    //       description: this.mapDescription,
+    //       gpx_url: gpx_url,
+    //       json_url: json_url,
+    //       visiblity:this.visiblity,
+    //     }
+    //     console.log('Map data to be saved:', mapData);
+    //     return this.mapservices.UploadMapDB(mapData);
+       
+    //   },
+    //   error:(err)=>{
+    //     console.error('File upload failed', err);
+    //     this.isUploading = false;
+
+    //   },
+    //   finalize:(() => {
+    //     this.isUploading = false; // Turn off loading indicator
+    //     alert('File uploaded successfully!');
+    // })
+    // })
 
     
   }
+  
 }

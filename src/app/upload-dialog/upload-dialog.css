@@ -27,19 +27,23 @@ h2{
   color: #333; 
 }
 
-#mapName {
+#mapName ,#mapDescription,#visiblity{
   padding: 8px;
   font-size: 16px;
   border: none;
   border-radius: 4px;
   outline: none;
+  color:black !important;
 }
-#mapName:focus {
+#mapName,#mapDescription,#visiblity:focus {
   border: 2px solid #f3770b;
   box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
 }
-#mapName::placeholder {
+#mapName,#mapDescription,#visiblity::placeholder {
   color: #aaa;
+}
+#visiblity option {
+    color: black;
 }
 
 .file-controls-wrapper{

@@ -3,41 +3,43 @@
 <mat-dialog-content class="content">
   <div class="form-group">
     <label for="mapName">Map Name:</label>
-    <input 
-      type="text" 
-      id="mapName" 
-      [(ngModel)]="mapName" 
-      placeholder="e.g. City Park Trail"
-      matInput 
-    >
+    <input type="text" id="mapName" [(ngModel)]="mapName" placeholder="e.g. City Park Trail" matInput>
+  </div>
+  <div class="form-group">
+    <label for="mapDescription">Description:</label>
+    <input type="text" id="mapDescription" [(ngModel)]="mapDescription"
+      placeholder="e.g. It covers the city park area around 3KM" matInput>
+  </div>
+  <div class="form-group">
+    <label for="visiblity">Visiblity</label>
+    <select id="visiblity" [(ngModel)]="visibility" >
+      <option value="PRIVATE" >Private</option>
+      <option value="PUBLIC">Public</option>
+    </select>
   </div>
 
   <div class="form-group">
     <label>Select GPX File:</label>
-     <div class="file-controls-wrapper"> 
-        <input type="file" id="fileUpload" accept=".gpx" hidden (change)="onSelectedFile($event)" #fileInput>
-        <button matButton id="upload-btn" (click)="fileInput.click()">Choose File</button>
-        <span class="file-name-display">{{ selectedFile ? selectedFile.name : 'No file chosen' }}</span>
-  </div>  
-    
+    <div class="file-controls-wrapper">
+      <input type="file" id="fileUpload" accept=".gpx" hidden (change)="onSelectedFile($event)" #fileInput>
+      <button matButton id="upload-btn" (click)="fileInput.click()">Choose File</button>
+      <span class="file-name-display">{{ selectedFile ? selectedFile.name : 'No file chosen' }}</span>
+    </div>
+
   </div>
- 
+
   @if (isUploading) {
-    <p >
-      <mat-spinner [diameter]="20" class="uploading-status"></mat-spinner> Uploading... Please wait.
-    </p>
-    
-  } 
+  <p>
+    <mat-spinner [diameter]="20" class="uploading-status"></mat-spinner> Uploading... Please wait.
+  </p>
+
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close class="save-map-btn">Cancel</button>
-  
-  <button 
-    mat-button 
-    class="save-map-btn"
-    (click)="onSubmit()" 
-    [disabled]="isUploading || !selectedFile || !mapName">
+
+  <button mat-button class="save-map-btn" (click)="onSubmit()" [disabled]="isUploading || !selectedFile || !mapName">
     {{ isUploading ? 'Uploading' : 'Save Map' }}
   </button>
 </mat-dialog-actions>
