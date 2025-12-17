@@ -3,16 +3,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
-import { UserService ,User,ApiUserResponse} from '../user-service';
+import { UserService ,ApiUserResponse} from '../user-service';
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { environment } from '../../Environment/environment';
 import { UserRole,UserStatus } from '../user-service';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,NgxSpinnerModule],
+  imports: [ReactiveFormsModule, CommonModule, NgxSpinnerModule, ToastrModule, RouterLink,],
   templateUrl: './user-management.html',
   styleUrls: ['./user-management.css'],
 })
@@ -42,7 +44,9 @@ public statusOptions=[
   isLoading: boolean = false;
   isCreating:boolean=false;
 
-  constructor(private fb: FormBuilder, private userService:UserService,private spinner:NgxSpinnerService) {}
+  constructor(private fb: FormBuilder, private userService:UserService,private spinner:NgxSpinnerService,
+    private toastr:ToastrService
+  ) {}
 
   ngOnInit() {
     this.initForms();
@@ -100,19 +104,40 @@ public statusOptions=[
     
       next: (data) => {
         if(data.isSuccess){
-          alert(`User ${data.name} created successfully!`);
-          this.newUserForm.reset({role:UserRole.Regular,status:'Active'});
+          // alert(`User ${data.name} created successfully!`);
+          this.toastr.success(`User ${data.name} created successfully! `, 'Success', {
+          positionClass: 'toast-top-right',
+          timeOut: 3500,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
         }else{
-          alert(`Failed to create user: ${data.errorMessage}`);
+          // alert(`Failed to create user: ${data.errorMessage}`);
+           this.toastr.error(`Failed to create user: ${data.errorMessage}`, 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 5000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
         }
         
       },
       error: (err) => {
         console.error('Failed to create user', err);
+        this.toastr.error(err, 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 5000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
       },
       complete:() =>{
         this.isCreating=false;
         this.spinner.hide();
+         this.newUserForm.reset({role:UserRole.Regular,status:'Active'});
       },
     });
   }
@@ -147,11 +172,27 @@ public statusOptions=[
         next: (responseUser) => {
           this.users[userIndex] = responseUser;
           this.cancelEdit();
-          alert(`User ${responseUser.name} updated successfully!`);
+          // alert(`User ${responseUser.name} updated successfully!`);
+          this.toastr.success(`User ${responseUser.name} updated successfully!`, 'Success', {
+          positionClass: 'toast-top-right',
+          timeOut: 3500,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+          
         },
         error: (err) => {
           console.error('Failed to update user', err);
           alert('Failed to update user. Please try again.');
+          this.toastr.error(`Failed to update user. Please try again.`, 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 3500,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+          
         }
       });
     }
@@ -164,11 +205,25 @@ public statusOptions=[
             // Filter the user out locally (efficient)
             this.users = this.users.filter(u => u.id !== userId); 
             
-            // You can use the 'success' string from the API here if needed:
-            alert(`${success} (User: ${userName})`);
+            // alert(`${success} (User: ${userName})`);
+          this.toastr.success(`The user: ${userName} deleted successfully `, 'Success', {
+          positionClass: 'toast-top-right',
+          timeOut: 3500,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+            
         },
         error: (err) => {
           console.error('Failed to delete user', err);
+          this.toastr.error(`Failed to delete user. Please try again.`, 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 3500,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
         }
       });
     }
