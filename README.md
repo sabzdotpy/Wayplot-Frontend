@@ -8,6 +8,10 @@ Before you begin, ensure you have the following installed on your machine:
 - [Node.js](https://nodejs.org/) (version 14.x or later)
 - [Angular CLI](https://angular.io/cli) (version 20.3.9)
 - A package manager like [npm](https://www.npmjs.com/) (comes with Node.js) or [Yarn](https://yarnpkg.com/)
+## Environment Setup
+- Create a file named `.env` in the root directory of the project.
+- Add fields `ASP_API_URL` and `DJANGO_API_URL` with the respective API URLs as their values.
+- Refer to the `.env.example` file for guidance on how to structure the `.env` file.
 ## Run
 1. npm install
 2. npm run start
