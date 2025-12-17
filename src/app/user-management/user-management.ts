@@ -3,8 +3,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
-import { UserService ,User} from '../user-service';
+import { UserService ,User,ApiUserResponse} from '../user-service';
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { environment } from '../../Environment/environment';
+import { UserRole,UserStatus } from '../user-service';
 
 
 @Component({
@@ -15,15 +17,28 @@ import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./user-management.css'],
 })
 export class UserManagement implements OnInit {
+  private baseurl=environment.ASP_API_URL;
+  public UserRole = UserRole;
+  public UserStatus=UserStatus;
+  public rolesOptions = [
+  { name: 'Super Admin', value: UserRole.SuperAdmin }, // value is 0
+  { name: 'Admin', value: UserRole.Admin },           // value is 1
+  { name: 'Regular', value: UserRole.Regular }        // value is 2
+];
+public statusOptions=[
+  {name:'Active',value:UserStatus.ACTIVE},
+  {name:'Inactive',value:UserStatus.INACTIVE},
+  {name:'Disabled',value:UserStatus.DISABLED},
+  {name:'Banned',value:UserStatus.BANNED},
+  {name:'Suspended',value:UserStatus.SUSPENDED},
+  {name:'Deleted',value:UserStatus.DELETED} ]
   
-  users: User[] = [
-    { id: 1, name: 'Admin User', email: 'admin@wayplot.com', role: 'Admin', status: 'Active' },
-    { id: 2, name: 'Jane Doe', email: 'jane.d@wayplot.com', role: 'SuperAdmin', status: 'Active'},
-    { id: 3, name: 'John Smith', email: 'john.s@wayplot.com', role: 'Regular', status: 'Inactive'},
+  users: ApiUserResponse[] = [
+    
   ];
   newUserForm!: FormGroup;
-  editingUserId: number | null = null;
-  editForms: { [key: number]: FormGroup } = {}; 
+  editingUserId: any | null = null;
+  editForms: { [key: string]: FormGroup } = {}; 
   isLoading: boolean = false;
   isCreating:boolean=false;
 
@@ -31,7 +46,7 @@ export class UserManagement implements OnInit {
 
   ngOnInit() {
     this.initForms();
-    // this.loadUsers();
+    this.loadUsers();
   
   }
   
@@ -40,13 +55,13 @@ export class UserManagement implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['Regular', Validators.required],
+      userRole: [UserRole.Regular, Validators.required],
       status:['Active',Validators.required]
     });
   }
 
   // --- Utility for Template Fix ---
-  getEditControl(userId: number, controlName: string): FormControl {
+  getEditControl(userId: any, controlName: string): FormControl {
       const control = this.editForms[userId].get(controlName);
       if (!control) {
           throw new Error(`Control ${controlName} not found for user ${userId}`);
@@ -55,33 +70,42 @@ export class UserManagement implements OnInit {
   }
   // --------------------------------
 
-  // loadUsers() {
-  //   this.isLoading = true;
-  //   this.userService.getUsers().subscribe({
-  //     next: (data) => {
-  //       this.users = data;
-  //       this.isLoading = false;
-  //     },
-  //     error: (err) => {
-  //       console.error('Failed to load users', err);
-  //       this.isLoading = false;
-  //     }
-  //   });
-  // }
+  loadUsers() {
+    this.isLoading = true;
+    this.spinner.show();
+    this.userService.getUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+        this.isLoading = false;
+        this.spinner.hide();
+      },
+      error: (err) => {
+        console.error('Failed to load users', err);
+        this.isLoading = false;
+        this.spinner.hide();
+      }
+    });
+  }
   
-  createUser() {
+  createUserr() {
     if (this.newUserForm.invalid) {
       this.newUserForm.markAllAsTouched();
       return;
     }
-    this.spinner.show();//===================>
+    console.log(this.newUserForm.value);
+    this.spinner.show();
     this.isCreating=true;
     
     this.userService.createUser(this.newUserForm.value).subscribe({
     
-      next: (newUser) => {
-        this.users.unshift(newUser); 
-        this.newUserForm.reset({role:'Regular',status:'Active'});
+      next: (data) => {
+        if(data.isSuccess){
+          alert(`User ${data.name} created successfully!`);
+          this.newUserForm.reset({role:UserRole.Regular,status:'Active'});
+        }else{
+          alert(`Failed to create user: ${data.errorMessage}`);
+        }
+        
       },
       error: (err) => {
         console.error('Failed to create user', err);
@@ -93,7 +117,7 @@ export class UserManagement implements OnInit {
     });
   }
 
-  startEdit(user: User) {
+  startEdit(user: ApiUserResponse) {
     this.editingUserId = user.id;
     this.editForms[user.id] = this.fb.group({
       name: [user.name, Validators.required],
@@ -103,7 +127,7 @@ export class UserManagement implements OnInit {
     });
   }
 
-  saveEdit(userId: number) {
+  saveEdit(userId: string) {
     const editForm = this.editForms[userId];
     if (editForm.invalid) {
       editForm.markAllAsTouched();
@@ -112,32 +136,36 @@ export class UserManagement implements OnInit {
     
     const userIndex = this.users.findIndex(u => u.id === userId);
     if (userIndex !== -1) {
-      const updatedUser: User = { 
+      const updatedUser: ApiUserResponse = { 
         ...this.users[userIndex], 
         ...editForm.value 
       };
+      console.log(updatedUser);
 
 
       this.userService.updateUser(updatedUser).subscribe({
         next: (responseUser) => {
           this.users[userIndex] = responseUser;
           this.cancelEdit();
+          alert(`User ${responseUser.name} updated successfully!`);
         },
         error: (err) => {
           console.error('Failed to update user', err);
+          alert('Failed to update user. Please try again.');
         }
       });
     }
   }
 
-  deleteUser(userId: number, userName: string) {
+  deleteUser(userId: any, userName: string) {
     if (confirm(`Are you sure you want to delete user: ${userName}?`)) {
-      this.users = this.users.filter(u => u.id !== userId);
       this.userService.deleteUser(userId).subscribe({
         next: (success) => {
-          if (success) {
-            this.users = this.users.filter(u => u.id !== userId);
-          }
+            // Filter the user out locally (efficient)
+            this.users = this.users.filter(u => u.id !== userId); 
+            
+            // You can use the 'success' string from the API here if needed:
+            alert(`${success} (User: ${userName})`);
         },
         error: (err) => {
           console.error('Failed to delete user', err);

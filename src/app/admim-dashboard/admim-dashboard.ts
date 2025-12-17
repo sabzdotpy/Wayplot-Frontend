@@ -6,14 +6,14 @@ import { CommonModule } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admim-dashboard',
   standalone: true,
-  imports: [CommonModule, MatSlideToggleModule, FormsModule, ToastrModule],
+  imports: [CommonModule, MatSlideToggleModule, FormsModule, ToastrModule, RouterLink],
   templateUrl: './admim-dashboard.html',
   styleUrl: './admim-dashboard.css',
 })
@@ -29,34 +29,38 @@ export class AdmimDashboard {
     return this.maps.length;
   }
 
-  map1: MapData = {
-    id: 1,
-    name: 'Kalasalingam Campus Map v2',
-    active: true,
-    uploadedAt: new Date('2025-12-12'),
-    gpx_url:
-      'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
-    json_url:
-      'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
-  };
-  map2: MapData = {
-    id: 2,
-    name: 'Kalasalingam University',
-    active: true,
-    uploadedAt: new Date('2025-12-10'),
-    gpx_url:
-      'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
-    json_url:
-      'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
-  };
-  map3: MapData = {
-    id: 3,
-    name: 'Warehouse Map',
-    active: true,
-    uploadedAt: new Date('2025-12-03'),
-    gpx_url: 'assets/maps/city-map.png',
-    json_url: '',
-  };
+   map1: MapData = {
+  id: 1,
+  name: 'Kalasalingam Campus Map v2',
+  description: 'Detailed map of all campus roads.',
+  active: true,
+  uploadedAt: new Date('2025-12-12'),
+  gpxUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
+  jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
+  visibility: 'Public'
+};
+
+map2: MapData = {
+  id: 2,
+  name: 'Kalasalingam University',
+  description: 'Full walking path track.',
+  active: true,
+  uploadedAt: new Date('2025-12-10'),
+  gpxUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
+  jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
+  visibility: 'Public'
+};
+
+map3: MapData = {
+  id: 3,
+  name: 'Warehouse Map',
+  description: 'Internal warehouse layout.',
+  active: true,
+  uploadedAt: new Date('2025-12-03'),
+  gpxUrl: 'assets/maps/city-map.png',
+  jsonUrl: '',
+  visibility: 'Private'
+};
 
   ngOnInit() {
     if (!localStorage.getItem('token')) {
@@ -74,24 +78,15 @@ export class AdmimDashboard {
   openDialog() {
     const dialogRef = this.dialog.open(UploadDialog);
 
-    // remove==> after db integration============================================================>
     dialogRef.afterClosed().subscribe((result: MapData | undefined) => {
-      if (result && result.name && result.json_url) {
-        const newMap: MapData = {
-          id: 5,
-          name: result.name,
-          gpx_url: result.gpx_url,
-          active: result.active,
-          json_url: result.json_url,
-          uploadedAt: result.uploadedAt,
-        };
+      if (result && result.name && result.jsonUrl) {
+        
 
-        // 3. Add the new map to the existing array
-        this.maps.unshift(newMap); // Adds to the beginning of the list
+        this.maps.unshift(result); 
 
-        console.log('New map added to dashboard list:', newMap);
+        console.log('New map added to dashboard list:', result);
       } else if (result) {
-        // Handle case where dialog closed but didn't return complete data (e.g., failed upload, but dialog closed)
+       
         console.warn('Dialog closed, but no complete map data returned.');
       }
     });
@@ -109,11 +104,11 @@ export class AdmimDashboard {
 
   OnDownload(map: MapData) {
     this.activeMenuId = null;
-    if (!map.gpx_url) {
+    if (!map.gpxUrl) {
       alert('No file URL found for this map.');
       return;
     }
-    this.mapService.OnDownloadMapFiles(map.gpx_url, map.json_url, map.name);
+    this.mapService.OnDownloadMapFiles(map.gpxUrl, map.jsonUrl, map.name);
   }
   OnDelete(map: MapData) {
     this.activeMenuId = null;

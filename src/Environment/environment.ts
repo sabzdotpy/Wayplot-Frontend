@@ -8,4 +8,6 @@ export const environment = {
     appId: '1:835252984620:web:c924db054df37eb386ea89',
     measurementId: 'G-2254PYLMCR',
   },
+  production: false,
+  ASP_API_URL: 'https://localhost:7018',
 };

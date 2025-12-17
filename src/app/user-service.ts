@@ -1,60 +1,109 @@
-
-// src/app/interfaces/user.interface.ts
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  password?: string;
-  role: string;
-  status:string;
-}
-
-// src/app/services/user.service.ts
-
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { environment } from '../Environment/environment';
+import { HttpClient } from '@angular/common/http';
+import { user } from '@angular/fire/auth';
+
+export interface AuthResponseWrapper {
+  isSuccess: boolean;
+  token: string;
+  name: string;
+  role: string; // The API returns the role as a string name!
+  errorMessage: string | null;
+}
+
+export interface ApiUserResponse {
+  id: string;
+  name: string;
+  email: string;
+  password: string; 
+  authType: number;        // API sends number (1)
+  role: number;            // API sends number (2) - Mismatch with User.userRole
+  status: number;
+  createdAt: string;
+  updatedAt: string;
+  scopes: string[]; 
+  sharedMaps: any[]; // Assuming this is an array of some type
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string; 
+  authType: AuthType; 
+  userRole: UserRole; 
+  scopes: string[]; 
+}
+export enum UserRole {
+  SuperAdmin=0,
+  Admin = 1,
+  Regular = 2,
+ 
+}
+ export enum AuthType
+ {
+     OAUTH=0,
+     PASSWORD=1
+ }
+
+    export enum UserStatus
+    {
+        ACTIVE=0,
+        INACTIVE=1,
+        DISABLED=2,
+        BANNED=3,
+        SUSPENDED=4,
+        DELETED=5
+    }
+
+
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  private baseurl=environment.ASP_API_URL;
   
-  // Mock Backend Data Store
-  private mockUsers: User[] = [
-    
-  ];
 
-  constructor() {}
 
-  getUsers(): Observable<User[]> {
-    return of(this.mockUsers).pipe(delay(500));
+  constructor(private http:HttpClient) {}
+
+  getUsers(): Observable<ApiUserResponse[]> {
+    return this.http.get<ApiUserResponse[]>(`${this.baseurl}/User/all`);
   }
 
-  createUser(userData: Partial<User>): Observable<User> {
-    const newUser: User = {
-      ...userData,
-      id: Date.now(), 
-
-    } as User;
-    
-    // this.mockUsers.unshift(newUser);
-    return of(newUser).pipe(delay(300));
+  createUser(userData: Partial<User>): Observable<AuthResponseWrapper> {
+    const newUser:Partial< User> = {
+      name:userData.name,
+      email:userData.email,
+      password:userData.password,
+      authType:AuthType.OAUTH,
+      userRole:userData.userRole,
+      scopes:userData.scopes
+    };
+    console.log(newUser);
+    return this.http.post<AuthResponseWrapper>(`${this.baseurl}/Auth/signUp`,newUser);
   }
 
-  updateUser(updatedUser: User): Observable<User> {
-    const index = this.mockUsers.findIndex(u => u.id === updatedUser.id);
-    if (index > -1) {
-      this.mockUsers[index] = updatedUser;
+  updateUser(updatedUser: ApiUserResponse): Observable<ApiUserResponse> {
+    const id=updatedUser.id;
+    const patchBody={
+      name:updatedUser.name,
+      email:updatedUser.email,
+      password:updatedUser.password,
+      authType:updatedUser.authType,
+      role:updatedUser.role,
+      status:updatedUser.status,
+      scopes:updatedUser.scopes
     }
-    return of(updatedUser).pipe(delay(300));
+    return this.http.patch<ApiUserResponse>(`${this.baseurl}/User/${id}`, updatedUser);
+    
   }
   
-  deleteUser(id: number): Observable<boolean> {
-    const initialLength = this.mockUsers.length;
-    this.mockUsers = this.mockUsers.filter(u => u.id !== id);
-    return of(this.mockUsers.length < initialLength).pipe(delay(300));
+  deleteUser(id: string): Observable<string> {
+    return this.http.delete(`${this.baseurl}/User/${id}`,{ responseType: 'text' });
   }
 }

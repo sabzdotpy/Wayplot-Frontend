@@ -25,20 +25,23 @@
                         <tbody>
                             @if (isLoading) {
                             <tr>
-                                <td colspan="6" class="loading-cell">Loading users...</td>
-                            </tr>
+                                
+                                <td colspan="6" class="loading-cell"><span><ngx-spinner size="medium" [fullScreen]="false"
+                                type="ball-clip-rotate-multiple"></ngx-spinner></span></td>
+                            </tr> 
                             } @else if (users.length === 0) {
                             <tr>
                                 <td colspan="6" class="loading-cell">No users found.</td>
                             </tr>
                             } @else {
                             @for (user of users; track user.id) {
-                            <tr [class.is-editing]="editingUserId === user.id">
+                            <tr [class.is-editing]="editingUserId === +user.id">
                                 <td>{{ user.id }}</td>
 
                                 <td>
                                     @if (editingUserId === user.id) {
-                                    <input type="text" class="edit-field" [formControl]="getEditControl(user.id, 'name')">
+                                    <input type="text" class="edit-field"
+                                        [formControl]="getEditControl(user.id, 'name')">
                                     } @else {
                                     {{ user.name }}
                                     }
@@ -46,7 +49,8 @@
 
                                 <td>
                                     @if (editingUserId === user.id) {
-                                    <input type="email" class="edit-field" [formControl]="getEditControl(user.id, 'email')">
+                                    <input type="email" class="edit-field"
+                                        [formControl]="getEditControl(user.id, 'email')">
                                     } @else {
                                     {{ user.email }}
                                     }
@@ -55,37 +59,39 @@
                                 <td>
                                     @if (editingUserId === user.id) {
                                     <select class="edit-field" [formControl]="getEditControl(user.id, 'role')">
-                                        <option value="SuperAdmin">Super Admin</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="Regular">Regular</option>
+                                        <option *ngFor="let role of rolesOptions" [ngValue]="role.value">
+                                            {{ role.name }}
+                                        </option>
                                     </select>
                                     } @else {
-                                    <span class="role-tag role-{{user.role.toLowerCase()}}">{{ user.role }}</span>
+                                    <span class="role-tag role-{{user.role}}">{{ UserRole[user.role] }}</span>
                                     }
                                 </td>
 
                                 <td>
                                     @if (editingUserId === user.id) {
-                                    <select id="status" class="edit-field" [formControl]="getEditControl(user.id,'status')">
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                        <option value="Disabled">Disabled</option>
-                                        <option value="Banned">Banned</option>
-                                        <option value="Suspended">Suspended</option>
-                                        <option value="Deleted">Deleted</option>
+                                        <select class="edit-field" [formControl]="getEditControl(user.id, 'status')">
+                                        <option *ngFor="let status of statusOptions" [ngValue]="status.value">
+                                            {{ status.name }}
+                                        </option>
                                     </select>
                                     } @else {
                                     <span>
-                                        {{user.status}}
+                                        {{UserStatus[user.status]}}
                                     </span>
                                     }
                                 </td>
 
                                 <td class="action-cell">
                                     @if (editingUserId === user.id) {
-                                    <button class="btn btn-icon-save" (click)="saveEdit(user.id)" title="Save Changes" [disabled]="editForms[user.id].invalid">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                            </button>
+                                    <button class="btn btn-icon-save" (click)="saveEdit(user.id)" title="Save Changes"
+                                        [disabled]="editForms[user.id].invalid">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </button>
                                     <button class="btn btn-icon-cancel" (click)="cancelEdit()" title="Cancel Edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -102,9 +108,17 @@
                                             <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                         </svg>
                                     </button>
-                                    <button class="btn btn-icon-delete" (click)="deleteUser(user.id, user.name)" title="Delete User">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                                            </button>
+                                    <button class="btn btn-icon-delete" (click)="deleteUser(user.id, user.name)"
+                                        title="Delete User">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                    </button>
                                     }
                                 </td>
                             </tr>
@@ -118,7 +132,7 @@
             <div class="glass-panel side-panel">
                 <h3>Create New User</h3>
 
-                <form [formGroup]="newUserForm" (ngSubmit)="createUser()" class="user-create-form">
+                <form [formGroup]="newUserForm" (ngSubmit)="createUserr()" class="user-create-form">
 
                     <div class="form-group">
                         <label for="name">Full Name</label>
@@ -149,10 +163,10 @@
 
                     <div class="form-group">
                         <label for="role">Role</label>
-                        <select id="role" formControlName="role" class="form-select">
-                            <option value="SuperAdmin">Super Admin</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Regular" selected>Regular</option>
+                        <select id="role" formControlName="userRole" class="form-select">
+                            <option *ngFor="let role of rolesOptions" [ngValue]="role.value">
+                                {{ role.name }}
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -169,8 +183,10 @@
 
                     <button type="submit" class="Userbtn btn-primary btn-full-width" [disabled]="newUserForm.invalid">
                         <span *ngIf="!isCreating">Create Account</span>
-                        <span *ngIf="isCreating" class="creating-user"><ngx-spinner size="small"[fullScreen]="false"  type="ball-clip-rotate-multiple"></ngx-spinner><span class="loading-text">Creating...</span></span>
-                        
+                        <span *ngIf="isCreating" class="creating-user"><ngx-spinner size="small" [fullScreen]="false"
+                                type="ball-clip-rotate-multiple"></ngx-spinner><span
+                                class="loading-text">Creating...</span></span>
+
                     </button>
                 </form>
             </div>

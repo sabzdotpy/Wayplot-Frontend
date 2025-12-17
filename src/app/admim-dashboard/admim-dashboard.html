@@ -2,7 +2,8 @@
 
   <nav class="glass-nav">
     <div class="nav-brand">WAYPLOT <span class="badge">ADMIN</span></div>
-    <div>
+    <div class="btn-nav">
+      <button class="btn btn-primary" routerLink="/analyticsdashboard" >View Analytics</button>
       <button class="btn btn-secondary" (click)="signOut()">Sign Out</button>
     </div>
   </nav>
@@ -16,6 +17,9 @@
           <h2>Your Maps</h2>
 
           <div class="upload-wrapper">
+            <button class="btn btn-primary" routerLink="/usermanagement">
+             Manage User
+            </button>
             <button class="btn btn-primary" (click)="openDialog() ">
               Upload Map (.gpx)
             </button>
@@ -86,11 +90,11 @@
                 </div>
                 <div>
                   <label for="mapgpxurl">Map gpx_url: </label>
-                  <input type="text" name="mapgpxurl" [(ngModel)]="editableMap!.gpx_url" required placeholder="Enter the url">
+                  <input type="text" name="mapgpxurl" [(ngModel)]="editableMap!.gpxUrl" required placeholder="Enter the url">
                 </div>
                 <div>
                   <label for="mapjsonurl">Map json_url: </label>
-                  <input type="text" name="mapjsonurl" [(ngModel)]="editableMap!.json_url" required placeholder="Enter the url">
+                  <input type="text" name="mapjsonurl" [(ngModel)]="editableMap!.jsonUrl" required placeholder="Enter the url">
                 </div>
                 <div>
                   <label for="mapstatus">Map Status:</label>
@@ -117,13 +121,13 @@
         <h3>Total Maps</h3>
         <div class="stat-content">
           <div class="big-number">{{totalMaps}}</div>
-          <div class="stat-trend positive">
+          <!-- <div class="stat-trend positive">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
               <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
               <polyline points="17 6 23 6 23 12"></polyline>
             </svg>
             +12% from last month
-          </div>
+          </div> -->
         </div>
       </div>
 

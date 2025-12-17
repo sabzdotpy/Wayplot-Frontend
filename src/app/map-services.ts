@@ -1,19 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../Environment/environment';
+import { Observable } from 'rxjs';
 
 export interface MapData{
   id: number;
   name: string;
-  gpx_url: string;
-  json_url: string;
+  description: string;
+  gpxUrl: string;
+  jsonUrl: string;
   uploadedAt: Date;
   active: boolean;
+  visibility: string;
+
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapServices {
+  private baseurl=environment.ASP_API_URL+'/Map'
   // further works with mongo dB integration 
 
   constructor(private http:HttpClient){}
@@ -46,5 +52,9 @@ export class MapServices {
 
   OnUpdateMap(map:MapData){
     // update map details in database
+  }
+
+  UploadMapDB(map:Partial<MapData>):Observable<MapData>{
+    return this.http.post<MapData>(this.baseurl,map);
   }
 }
