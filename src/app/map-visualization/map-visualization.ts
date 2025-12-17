@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 
+import { NgIf } from '@angular/common';
+import { environment } from '../../Environment/environment';
+
 // --- INTERFACE DEFINITIONS ---
 interface Node {
   id: number;
@@ -34,7 +37,6 @@ interface RouteResponse {
   turn_count: number;   
 }
 
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-map-visualization',
@@ -47,7 +49,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   // --- CONFIGURATION & CONSTANTS ---
   private CLOUDINARY_JSON_URL = '';
   // Set this to your Python backend URL for routing
-  private readonly API_URL = 'http://localhost:8000/routing/calculate/';
+  private readonly API_URL = `${environment.DJANGO_API_URL}/routing/calculate/`;
 
   // --- ANGULAR STATE (Bound to HTML) ---
   statusMessage: string = 'Initializing...';
@@ -189,6 +191,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   private loadGraphData(): void {
     this.http.get<Graph>(this.CLOUDINARY_JSON_URL).subscribe({
       next: (data) => {
+        console.log(data);
         this.graphData = data;
         // NEW: Populate the ID to Node Map
         this.idToNodeMap = new Map(data.nodes.map((node) => [node.id, node]));

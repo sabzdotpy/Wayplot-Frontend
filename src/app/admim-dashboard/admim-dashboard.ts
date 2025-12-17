@@ -120,6 +120,19 @@ export class AdmimDashboard {
   OnDelete(map: MapData) {
     this.activeMenuId = null;
     this.maps = this.maps.filter((m) => m.id !== map.id);
+
+    this.mapService.DeleteMap(map.id.toString()).subscribe({
+      next: () => {
+        this.maps = this.maps.filter((m) => m.id !== map.id);
+        this.toastr.success(`Map "${map.name}" deleted successfully.`, 'Success', {
+          positionClass: 'toast-top-right',
+          timeOut: 3000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+      }
+    });
   }
 
   activeEditId: number | null = null;

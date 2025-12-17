@@ -11,7 +11,7 @@ export interface MapData{
   jsonUrl: string;
   status: number;
   active: boolean;
-  visibility: string;
+  visibility: string | number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -20,6 +20,7 @@ export interface MapData{
   providedIn: 'root',
 })
 export class MapServices {
+
   private baseurl=environment.ASP_API_URL+'/Map'
   // further works with mongo dB integration 
 
@@ -59,7 +60,12 @@ export class MapServices {
     // update map details in database
   }
 
+  DeleteMap(mapId:string) {
+    return this.http.delete(`${this.baseurl}/${mapId}`);
+  } 
+
   UploadMapDB(map:Partial<MapData>):Observable<MapData>{
-    return this.http.post<MapData>(this.baseurl,map);
+    let uploaderId = localStorage.getItem('userId') || 'unknown';
+    return this.http.post<MapData>(`${this.baseurl}/${uploaderId}`, map);
   }
 }
