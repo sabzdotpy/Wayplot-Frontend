@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 interface ChartData {
   name: string;
@@ -11,7 +12,7 @@ interface SeriesData {
 
 @Component({
   selector: 'app-analysis-dashboard',
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule,RouterModule],
   templateUrl: './analysis-dashboard.html',
   styleUrl: './analysis-dashboard.css',
 })
