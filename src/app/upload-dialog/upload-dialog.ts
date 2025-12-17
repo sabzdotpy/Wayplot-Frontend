@@ -45,12 +45,14 @@ export class UploadDialog {
         description: this.mapDescription,
         gpxUrl: gpx_url,
         jsonUrl: json_url,
-        visibility: this.visibility,
+        visibility: (this.visibility == "PUBLIC") ? 0 : 1,
       };
       console.log('Map data to be saved:', mapData);
 
       // 3. Return the Observable for the DB save
-      return this.mapservices.UploadMapDB(mapData);
+      let res = this.mapservices.UploadMapDB(mapData);
+      this.mapservices.listAllMaps();
+      return res;
       }),catchError((error) => {
         console.error('Upload Process Failed:', error);
         alert('Upload failed: ' + (error.message || 'Check console for details.'));

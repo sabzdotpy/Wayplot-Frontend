@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../Environment/environment';
 
 interface GpxUploadResponse {
   status: string;
@@ -18,7 +19,7 @@ export class CloudinaryService {
 
   constructor(private http:HttpClient){}
 
-  private apiUrl='http://localhost:8000/routing/upload_gpx/'
+  private apiUrl=`${environment.DJANGO_API_URL}/routing/upload_gpx/`
   
   UploadToCloudinary(file:File):Observable<GpxUploadResponse>{
     const formData = new FormData();

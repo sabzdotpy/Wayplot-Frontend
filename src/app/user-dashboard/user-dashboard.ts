@@ -28,7 +28,7 @@ export class UserDashboard implements OnInit {
       views: 350,
       tags: ['Campus', 'Walk', 'Own'],
       jsonUrl:
-        'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
+        "https://res.cloudinary.com/dezwo04ym/raw/upload/v1765950443/gpx_graphs/json_graph/KLU_Campus_All_Roads",
       mapUrl:
         'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
     },
