@@ -10,8 +10,7 @@ export const environment = {
   },
   production: false,
 
-  ASP_API_URL: 'https://localhost:7018',
-
+  ASP_API_URL: 'http://localhost:5057',
   DJANGO_API_URL: 'http://localhost:8000',
 
 };

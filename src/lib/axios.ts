@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { environment } from '../Environment/environment';
 
 const instance = axios.create({
-    baseURL: 'https://localhost:7018',
+    baseURL: environment.ASP_API_URL,
     timeout: 1000,
     withCredentials: true
 });
