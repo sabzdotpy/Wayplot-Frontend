@@ -21,7 +21,7 @@
           </svg>
           <input 
             type="text" 
-            placeholder="Search by name, tags, or description..." 
+            placeholder="Search by name , description..." 
             [(ngModel)]="searchText"
             class="search-input">
         </div>
@@ -29,7 +29,7 @@
       
       <div class="map-list-wrapper">
         
-        @for (map of getFilteredMaps(); track map.id) {
+        @for (map of filteredMaps; track map.id) {
         <div class="map-card">
             
           <div class="card-icon-box">
@@ -44,18 +44,18 @@
           <div class="card-info">
             <h3>{{map.name}}</h3>
             <p>{{map.description}}</p>
-            <div class="card-tags">
+            <!-- <div class="card-tags">
               @for (tag of map.tags; track $index) {
                 <span class="tag tag-small">{{tag}}</span>
               }
-            </div>
+            </div> -->
           </div>
           
           <div class="card-meta">
-            <span class="view-count">{{map.views | number}} views</span>
+            <span class="view-count">{{map.views | number}} 4 views</span>
             
             <div class="action-buttons">
-              <button class="btn btn-download" title="Download Map" (click)="OnDownload(map.mapUrl,map.jsonUrl,map.name)">
+              <button class="btn btn-download" title="Download Map" (click)="OnDownload(map.gpxUrl,map.jsonUrl,map.name)">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>

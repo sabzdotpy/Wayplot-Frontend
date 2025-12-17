@@ -9,10 +9,9 @@ export const environment = {
     measurementId: 'G-2254PYLMCR',
   },
   production: false,
-<<<<<<< HEAD
+
   ASP_API_URL: 'https://localhost:7018',
-=======
-  ASP_API_URL: 'http://localhost:5057',
+
   DJANGO_API_URL: 'http://localhost:8000',
->>>>>>> 570f5b338f6872e4ed18f60f3930fa541b5b9a00
+
 };

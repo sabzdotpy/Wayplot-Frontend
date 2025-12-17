@@ -75,32 +75,6 @@ export class UploadDialog {
 
 
 
-    // .subscribe({
-    //   next:(response)=>{
-    //     const gpx_url=response.cloudinary_gpx_url;
-    //     const json_url=response.cloudinary_json_url;
-    //      const mapData:Partial<MapData>={
-    //       name: this.mapName,
-    //       description: this.mapDescription,
-    //       gpx_url: gpx_url,
-    //       json_url: json_url,
-    //       visiblity:this.visiblity,
-    //     }
-    //     console.log('Map data to be saved:', mapData);
-    //     return this.mapservices.UploadMapDB(mapData);
-       
-    //   },
-    //   error:(err)=>{
-    //     console.error('File upload failed', err);
-    //     this.isUploading = false;
-
-    //   },
-    //   finalize:(() => {
-    //     this.isUploading = false; // Turn off loading indicator
-    //     alert('File uploaded successfully!');
-    // })
-    // })
-
     
   }
   

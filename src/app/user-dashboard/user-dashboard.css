@@ -318,6 +318,8 @@
 @media (max-width: 1200px) {
   .search-wrapper {
     width: 300px;
+    box-sizing: border-box;
+
   }
 }
 
@@ -332,6 +334,7 @@
   }
   .search-wrapper {
     width: 100%;
+    box-sizing: border-box;
   }
   .map-list-wrapper {
     /* Base width for smaller screens allows for single column */

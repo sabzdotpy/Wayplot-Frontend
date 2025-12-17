@@ -19,115 +19,117 @@ export class UserDashboard implements OnInit {
 
   // Mock data structure for the user's maps
   // Note: 'tags' are used for extra search filter possibilities
-  mockMaps = [
-    {
-      id: 100,
-      name: 'Kalasalingam Campus Map v2',
-      description:
-        'Live walking map of kalasalingam university v2, More routes and shortcuts. Captured by TrioVerse.',
-      views: 350,
-      tags: ['Campus', 'Walk', 'Own'],
-      jsonUrl:
-        "https://res.cloudinary.com/dezwo04ym/raw/upload/v1765950443/gpx_graphs/json_graph/KLU_Campus_All_Roads",
-      mapUrl:
-        'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
-    },
-    {
-      id: 101,
-      name: 'Kalasalingam University',
-      description: 'Live walking map of kalasalingam university. Captured by TrioVerse.',
-      views: 350,
-      tags: ['Campus', 'Walk', 'Own'],
-      jsonUrl:
-        'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
-      mapUrl:
-        'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
-    },
-    {
-      id: 102,
-      name: 'Downtown Bike Lanes',
-      description: 'Optimized route for city commuting and sightseeing.',
-      views: 1200,
-      tags: ['Bike', 'City', 'Commute'],
-      jsonUrl:
-        'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',
-      mapUrl: '',
-    },
-    {
-      id: 103,
-      name: 'Historical Walking Tour',
-      description: 'Points of interest across the old district.',
-      views: 98,
-      tags: ['Walk', 'History', 'City'],
-      jsonUrl:
-        'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',
-      mapUrl: '',
-    },
-    {
-      id: 104,
-      name: 'Coastal Scenic Drive',
-      description: 'A popular driving route along the Pacific coast.',
-      views: 890,
-      tags: ['Drive', 'Scenic', 'Coastal'],
-      jsonUrl: '',
-      mapUrl: '',
-    },
-    {
-      id: 105,
-      name: 'River Kayak Tour',
-      description: 'Paddlesport route from Miller Dam to Portville.',
-      views: 45,
-      tags: ['Water', 'Kayak', 'River'],
-      jsonUrl: '',
-      mapUrl: '',
-    },
-    {
-      id: 106,
-      name: 'Central Park Jogging Path',
-      description: 'A flat, 5km loop ideal for runners.',
-      views: 210,
-      tags: ['Run', 'Park', 'Easy'],
-      jsonUrl: '',
-      mapUrl: '',
-    },
-    {
-      id: 107,
-      name: 'Coastal Scenic Drive',
-      description: 'A popular driving route along the Pacific coast.',
-      views: 890,
-      tags: ['Drive', 'Scenic', 'Coastal'],
-      jsonUrl: '',
-      mapUrl: '',
-    },
-    {
-      id: 108,
-      name: 'River Kayak Tour',
-      description: 'Paddlesport route from Miller Dam to Portville.',
-      views: 45,
-      tags: ['Water', 'Kayak', 'River'],
-      jsonUrl: '',
-      mapUrl: '',
-    },
-    {
-      id: 109,
-      name: 'Central Park Jogging Path',
-      description: 'A flat, 5km loop ideal for runners.',
-      views: 210,
-      tags: ['Run', 'Park', 'Easy'],
-      jsonUrl: '',
-      mapUrl: '',
-    },
-  ];
+  // mockMaps = [
+  //   {
+  //     id: 100,
+  //     name: 'Kalasalingam Campus Map v2',
+  //     description:
+  //       'Live walking map of kalasalingam university v2, More routes and shortcuts. Captured by TrioVerse.',
+  //     views: 350,
+  //     tags: ['Campus', 'Walk', 'Own'],
+  //     jsonUrl:
+  //       "https://res.cloudinary.com/dezwo04ym/raw/upload/v1765950443/gpx_graphs/json_graph/KLU_Campus_All_Roads",
+  //     mapUrl:
+  //       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
+  //   },
+  //   {
+  //     id: 101,
+  //     name: 'Kalasalingam University',
+  //     description: 'Live walking map of kalasalingam university. Captured by TrioVerse.',
+  //     views: 350,
+  //     tags: ['Campus', 'Walk', 'Own'],
+  //     jsonUrl:
+  //       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
+  //     mapUrl:
+  //       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
+  //   },
+  //   {
+  //     id: 102,
+  //     name: 'Downtown Bike Lanes',
+  //     description: 'Optimized route for city commuting and sightseeing.',
+  //     views: 1200,
+  //     tags: ['Bike', 'City', 'Commute'],
+  //     jsonUrl:
+  //       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 103,
+  //     name: 'Historical Walking Tour',
+  //     description: 'Points of interest across the old district.',
+  //     views: 98,
+  //     tags: ['Walk', 'History', 'City'],
+  //     jsonUrl:
+  //       'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765440276/gpx_graphs/campus_routing_graph',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 104,
+  //     name: 'Coastal Scenic Drive',
+  //     description: 'A popular driving route along the Pacific coast.',
+  //     views: 890,
+  //     tags: ['Drive', 'Scenic', 'Coastal'],
+  //     jsonUrl: '',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 105,
+  //     name: 'River Kayak Tour',
+  //     description: 'Paddlesport route from Miller Dam to Portville.',
+  //     views: 45,
+  //     tags: ['Water', 'Kayak', 'River'],
+  //     jsonUrl: '',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 106,
+  //     name: 'Central Park Jogging Path',
+  //     description: 'A flat, 5km loop ideal for runners.',
+  //     views: 210,
+  //     tags: ['Run', 'Park', 'Easy'],
+  //     jsonUrl: '',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 107,
+  //     name: 'Coastal Scenic Drive',
+  //     description: 'A popular driving route along the Pacific coast.',
+  //     views: 890,
+  //     tags: ['Drive', 'Scenic', 'Coastal'],
+  //     jsonUrl: '',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 108,
+  //     name: 'River Kayak Tour',
+  //     description: 'Paddlesport route from Miller Dam to Portville.',
+  //     views: 45,
+  //     tags: ['Water', 'Kayak', 'River'],
+  //     jsonUrl: '',
+  //     mapUrl: '',
+  //   },
+  //   {
+  //     id: 109,
+  //     name: 'Central Park Jogging Path',
+  //     description: 'A flat, 5km loop ideal for runners.',
+  //     views: 210,
+  //     tags: ['Run', 'Park', 'Easy'],
+  //     jsonUrl: '',
+  //     mapUrl: '',
+  //   },
+  // ];
 
   constructor(
-    private mapservice: MapServices,
-    private passingUrl: MapVisualitionUrl,
+    private mapService: MapServices,
     private router: Router,
     private toastr: ToastrService
   ) {}
 
   ngOnInit() {
-    this.maps = this.mockMaps;
+    // this.maps = this.mockMaps;
+    this.mapService.listAllMaps().subscribe((maps: any) => {
+      this.maps = maps.data;
+    });
     if (!localStorage.getItem('token')) {
       this.toastr.error('No token found. Please sign in.', 'Error', {
         positionClass: 'toast-top-right',
@@ -141,24 +143,18 @@ export class UserDashboard implements OnInit {
   }
 
   // --- Search and Filtering Logic ---
-  getFilteredMaps(): any[] {
-    if (!this.searchText) {
-      return this.maps; // Show all maps if no search text
-    }
-    const searchLower = this.searchText.toLowerCase();
-
-    // Filter maps based on name, description, or tags
-    return this.maps.filter(
-      (map) =>
-        map.name.toLowerCase().includes(searchLower) ||
-        map.description.toLowerCase().includes(searchLower) ||
-        map.tags.some((tag: string) => tag.toLowerCase().includes(searchLower))
-    );
-  }
+  // Change this in your .ts file
+get filteredMaps(): any[] {
+  if (!this.searchText) return this.maps;
+  const search = this.searchText.toLowerCase();
+  return this.maps.filter(m => 
+    (m.name?.toLowerCase().includes(search)) || 
+    (m.description?.toLowerCase().includes(search))
+  );
+}
 
   // Placeholder for map action
   viewMap(mapUrl: string, mapName: string) {
-    // this.passingUrl.AssignUrl(mapUrl);
     if (!mapUrl) {
       alert("Sorry, Map url doesn't exist!");
       return;
@@ -167,11 +163,11 @@ export class UserDashboard implements OnInit {
   }
 
   OnDownload(gpx_url: string, json_url: string, fileName: string) {
-    if (!gpx_url || !json_url) {
+    if (!gpx_url||!json_url) {
       alert('No file URL found for this map.');
       return;
     }
-    this.mapservice.OnDownloadMapFiles(gpx_url, json_url, fileName);
+    this.mapService.OnDownloadMapFiles(gpx_url, json_url, fileName);
   }
 
   async signOut() {
