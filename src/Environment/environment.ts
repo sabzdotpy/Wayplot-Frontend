@@ -9,5 +9,5 @@ export const environment = {
     measurementId: 'G-2254PYLMCR',
   },
   production: false,
-  ASP_API_URL: 'https://localhost:7018',
+  ASP_API_URL: 'http://localhost:5057',
 };

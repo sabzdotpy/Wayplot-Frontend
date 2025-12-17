@@ -9,10 +9,11 @@ export interface MapData{
   description: string;
   gpxUrl: string;
   jsonUrl: string;
-  uploadedAt: Date;
+  status: number;
   active: boolean;
   visibility: string;
-
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 @Injectable({
@@ -23,6 +24,10 @@ export class MapServices {
   // further works with mongo dB integration 
 
   constructor(private http:HttpClient){}
+
+  listAllMaps():Observable<MapData[]>{
+    return this.http.get<MapData[]>(this.baseurl);
+  }
 
   downloadFile(url:string, fileName:string){
     this.http.get(url, { responseType: 'blob' }).subscribe({

@@ -39,11 +39,12 @@
               </div>
               <div class="map-info">
                 <h3>{{item.name}}</h3>
-                <p>{{item.uploadedAt|date:'dd-MM-yyyy'}} <br>  • 4 views</p>
+                <span>{{item.description}}</span>
+                <p>{{item.createdAt|date:'dd-MM-yyyy'}} <br> 👁️ 4 views</p>
               </div>
               <div class="map-meta">
                 <span class="tag tag-generated">Uploaded</span>
-                <span class="status status-active">{{item.active? 'Active':'Inactive'}}</span>
+                <span class="status status-active">{{(item.status == 0) ? 'Active':'Inactive'}}</span>
                 <div class="menu-wrapper">
 
                   <button class="btn-icon" (click)="toggleMenu(item.id)">⋮</button>

@@ -217,6 +217,11 @@
   font-weight: 500;
 }
 
+.map-info span {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
 .map-info p {
   margin: 0;
   font-size: 0.8rem;

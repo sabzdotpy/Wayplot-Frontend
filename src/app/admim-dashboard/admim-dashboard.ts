@@ -17,10 +17,16 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './admim-dashboard.html',
   styleUrl: './admim-dashboard.css',
 })
-
 export class AdmimDashboard {
-  constructor(private dialog: MatDialog, private mapService: MapServices, private toastr: ToastrService, private router: Router) {
-    this.maps.push(this.map1, this.map2, this.map3);
+  constructor(
+    private dialog: MatDialog,
+    private mapService: MapServices,
+    private toastr: ToastrService,
+    private router: Router
+  ) {
+    this.mapService.listAllMaps().subscribe((maps: any) => {
+      this.maps = maps.data;
+    });
   }
 
   maps: MapData[] = [];
@@ -29,38 +35,42 @@ export class AdmimDashboard {
     return this.maps.length;
   }
 
-   map1: MapData = {
-  id: 1,
-  name: 'Kalasalingam Campus Map v2',
-  description: 'Detailed map of all campus roads.',
-  active: true,
-  uploadedAt: new Date('2025-12-12'),
-  gpxUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
-  jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
-  visibility: 'Public'
-};
+  // map1: MapData = {
+  //   id: 1,
+  //   name: 'Kalasalingam Campus Map v2',
+  //   description: 'Detailed map of all campus roads.',
+  //   active: true,
+  //   uploadedAt: new Date('2025-12-12'),
+  //   gpxUrl:
+  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
+  //   jsonUrl:
+  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
+  //   visibility: 'Public',
+  // };
 
-map2: MapData = {
-  id: 2,
-  name: 'Kalasalingam University',
-  description: 'Full walking path track.',
-  active: true,
-  uploadedAt: new Date('2025-12-10'),
-  gpxUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
-  jsonUrl: 'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
-  visibility: 'Public'
-};
+  // map2: MapData = {
+  //   id: 2,
+  //   name: 'Kalasalingam University',
+  //   description: 'Full walking path track.',
+  //   active: true,
+  //   uploadedAt: new Date('2025-12-10'),
+  //   gpxUrl:
+  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
+  //   jsonUrl:
+  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
+  //   visibility: 'Public',
+  // };
 
-map3: MapData = {
-  id: 3,
-  name: 'Warehouse Map',
-  description: 'Internal warehouse layout.',
-  active: true,
-  uploadedAt: new Date('2025-12-03'),
-  gpxUrl: 'assets/maps/city-map.png',
-  jsonUrl: '',
-  visibility: 'Private'
-};
+  // map3: MapData = {
+  //   id: 3,
+  //   name: 'Warehouse Map',
+  //   description: 'Internal warehouse layout.',
+  //   active: true,
+  //   uploadedAt: new Date('2025-12-03'),
+  //   gpxUrl: 'assets/maps/city-map.png',
+  //   jsonUrl: '',
+  //   visibility: 'Private',
+  // };
 
   ngOnInit() {
     if (!localStorage.getItem('token')) {
@@ -80,13 +90,10 @@ map3: MapData = {
 
     dialogRef.afterClosed().subscribe((result: MapData | undefined) => {
       if (result && result.name && result.jsonUrl) {
-        
-
-        this.maps.unshift(result); 
+        this.maps.unshift(result);
 
         console.log('New map added to dashboard list:', result);
       } else if (result) {
-       
         console.warn('Dialog closed, but no complete map data returned.');
       }
     });
