@@ -148,7 +148,8 @@ public statusOptions=[
       name: [user.name, Validators.required],
       email: [user.email, [Validators.required, Validators.email]],
       role: [user.role, Validators.required],
-      status: [user.status,Validators.required]
+      status: [user.status,Validators.required],
+      scopes: [user.scopes || '']
     });
   }
 

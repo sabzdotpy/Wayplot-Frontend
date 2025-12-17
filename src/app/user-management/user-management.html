@@ -17,11 +17,11 @@
                 <table class="user-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
+                            <th>Scopes</th>
                             <th class="action-header">Actions</th>
                         </tr>
                     </thead>
@@ -39,8 +39,6 @@
                         } @else {
                         @for (user of users; track user.id) {
                         <tr [class.is-editing]="editingUserId === +user.id">
-                            <td>{{ user.id }}</td>
-
                             <td>
                                 @if (editingUserId === user.id) {
                                 <input type="text" class="edit-field" [formControl]="getEditControl(user.id, 'name')">
@@ -79,6 +77,18 @@
                                 } @else {
                                 <span>
                                     {{UserStatus[user.status]}}
+                                </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (editingUserId === user.id) {
+                                <input type="text" class="edit-field"
+                                    [formControl]="getEditControl(user.id, 'scopes')"
+                                    placeholder="Comma-separated scopes">
+                                } @else {
+                                <span>
+                                    {{ (user.scopes.length > 0) ? user.scopes.join(', ') : 'None' }}
                                 </span>
                                 }
                             </td>

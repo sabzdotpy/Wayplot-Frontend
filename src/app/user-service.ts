@@ -97,9 +97,9 @@ export class UserService {
       authType:updatedUser.authType,
       role:updatedUser.role,
       status:updatedUser.status,
-      scopes:updatedUser.scopes
+      scopes:[updatedUser.scopes]
     }
-    return this.http.patch<ApiUserResponse>(`${this.baseurl}/User/${id}`, updatedUser);
+    return this.http.patch<ApiUserResponse>(`${this.baseurl}/User/${id}`, patchBody);
     
   }
   
