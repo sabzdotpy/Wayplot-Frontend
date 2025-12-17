@@ -2,6 +2,21 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
 
+# Project Setup
+## Prerequisites
+Before you begin, ensure you have the following installed on your machine:
+- [Node.js](https://nodejs.org/) (version 14.x or later)
+- [Angular CLI](https://angular.io/cli) (version 20.3.9)
+- A package manager like [npm](https://www.npmjs.com/) (comes with Node.js) or [Yarn](https://yarnpkg.com/)
+## Run
+1. npm install
+2. npm run start
+3. Open http://localhost:4200/ in your browser
+
+
+---
+
+
 ## Development server
 
 To start a local development server, run:
