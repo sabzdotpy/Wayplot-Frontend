@@ -115,7 +115,8 @@ export class AdmimDashboard {
       alert('No file URL found for this map.');
       return;
     }
-    this.mapService.OnDownloadMapFiles(map.gpxUrl, map.jsonUrl, map.name);
+    alert("fuc my life")
+    this.mapService.OnDownloadMapFiles(map.id.toString(), map.gpxUrl, map.jsonUrl, map.name);
   }
   OnDelete(map: MapData) {
     this.activeMenuId = null;
@@ -170,7 +171,7 @@ export class AdmimDashboard {
       easeTime: 400,
       toastClass: 'ngx-toastr slide-in',
     });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     localStorage.clear();
     this.router.navigate(['/signin']);
   }

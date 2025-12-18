@@ -162,12 +162,12 @@ get filteredMaps(): any[] {
     this.router.navigate(['/viewmap'], { queryParams: { mapname: mapName, mapurl: mapUrl } });
   }
 
-  OnDownload(gpx_url: string, json_url: string, fileName: string) {
+  OnDownload(id: string, gpx_url: string, json_url: string, fileName: string) {
     if (!gpx_url||!json_url) {
       alert('No file URL found for this map.');
       return;
     }
-    this.mapService.OnDownloadMapFiles(gpx_url, json_url, fileName);
+    this.mapService.OnDownloadMapFiles(id, gpx_url, json_url, fileName);
   }
 
   async signOut() {
