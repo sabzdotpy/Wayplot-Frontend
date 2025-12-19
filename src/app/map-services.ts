@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../Environment/environment';
 import { Observable } from 'rxjs';
+import axios from "../lib/axios"
 
 export interface MapData{
   id: number;
@@ -47,9 +48,21 @@ export class MapServices {
     });
   }
 
-  OnDownloadMapFiles(gpxUrl: string, jsonUrl: string, baseFileName: string): void {
+  async logDownload(mapId: string): Promise<Observable<boolean>> {
+    alert("logging download for mapId: " + mapId);
+    let userId = localStorage.getItem('userId') || 'unknown';
+    let res = await axios.post("Map/log-download", {
+      mapId: mapId,
+      actorId: userId
+    });
+
+    return res.data.success;
+  }
+
+  OnDownloadMapFiles(id: string, gpxUrl: string, jsonUrl: string, baseFileName: string): void {
     
     this.downloadFile(gpxUrl, `${baseFileName}.gpx`);
+    this.logDownload(id);
 
     setTimeout(() => {
         this.downloadFile(jsonUrl, `${baseFileName}.json`);

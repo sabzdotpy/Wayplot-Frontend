@@ -643,4 +643,8 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
 
     return [newLat, newLon];
   }
+
+  public goBack(): void {
+    window.history.back();
+  }
 }

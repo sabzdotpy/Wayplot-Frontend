@@ -34,6 +34,18 @@ h3, h4 {
     margin-bottom: 10px;
 }
 
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.4rem;
+}
+
+.header span .icon-btn {
+    background: none !important;
+    color: black
+}
+
 .panel {
     background: white;
     padding: 15px;
