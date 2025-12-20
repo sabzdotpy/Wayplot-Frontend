@@ -41,8 +41,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
-            sudo mkdir -p /var/www/angular-app
-            sudo chown -R $USER:$USER /var/www/angular-app
+            sudo mkdir -p /var/www/wayplot-frontend
+            sudo chown -R $USER:$USER /var/www/wayplot-frontend
 
       - name: Copy build to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "dist/"
-          target: "/var/www/angular-app"
+          target: "/var/www/wayplot-frontend"
           strip_components: 1
 
       - name: Reload Nginx
