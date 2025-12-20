@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { environment } from '../Environment/environment';
+import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { user } from '@angular/fire/auth';
 

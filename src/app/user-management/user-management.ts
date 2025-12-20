@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } 
 import { CommonModule } from '@angular/common'; 
 import { UserService ,ApiUserResponse} from '../user-service';
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
-import { environment } from '../../Environment/environment';
+import { environment } from '../../environments/environment';
 import { UserRole,UserStatus } from '../user-service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { RouterLink, RouterLinkActive } from "@angular/router";

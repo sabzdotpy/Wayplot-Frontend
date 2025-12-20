@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 import { NgIf } from '@angular/common';
-import { environment } from '../../Environment/environment';
+import { environment } from '../../environments/environment';
 
 // --- INTERFACE DEFINITIONS ---
 interface Node {
