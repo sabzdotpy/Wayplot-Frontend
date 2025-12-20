@@ -44,7 +44,13 @@
               </div>
               <div class="map-meta">
                 <span class="tag tag-generated">Uploaded</span>
-                <span class="status status-active">{{(item.status == 0) ? 'Active':'Inactive'}}</span>
+                @if(item.status===2){
+                  <span class="status status-active">deleted</span>
+                }
+                @else {
+                  <span class="status status-active">{{(item.status == 0) ? 'Active':'Inactive'}}</span>
+                }
+                
                 <div class="menu-wrapper">
 
                   <button class="btn-icon" (click)="toggleMenu(item.id)">⋮</button>
@@ -100,6 +106,13 @@
                 <div>
                   <label for="mapstatus">Map Status:</label>
                   <mat-slide-toggle id="toggle-Button" name="mapstatus" [(ngModel)]="editableMap!.active" [checked]="editableMap!.active"></mat-slide-toggle>
+                </div>
+                <div>
+                  <label for="mapvisiblity">Map Visiblity:</label>
+                  <select name="mapvisiblity" id="mapvisiblity"[(ngModel)]="editableMap!.visibility">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
                 </div>
                 <div class="updates-btn">
                   <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>

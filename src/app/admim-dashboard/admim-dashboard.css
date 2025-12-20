@@ -195,7 +195,7 @@
   gap: 45px;
 }
 
-.edit-map-form input {
+.edit-map-form input,select {
   padding: 8px 12px;
   border-radius: 6px;
   border: none;
@@ -351,10 +351,52 @@
 @media (max-width: 992px) {
   .dashboard-grid {
     grid-template-columns: 1fr; /* Stack columns */
+    box-sizing: border-box;
+    position: relative;
   }
   
   .glass-panel {
     padding: 20px;
+  }
+
+}
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr; 
+    box-sizing: border-box;
+    position: relative;
+  }
+  .edit-map-form {
+    grid-template-columns: 1fr; /* Stack all inputs vertically */
+    row-gap: 15px;
+  }
+  .updates-btn {
+    justify-content: flex-start; /* Buttons stack naturally */
+    gap: 10px;
+  }
+  .map-item-content{
+    width: 100%;
+    flex-direction: column;
+  }
+  .sidebar{
+    margin-top: 65px;
+  }
+  .map-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .map-icon-box {
+    margin-bottom: 10px;
+  }
+  
+  .map-meta {
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  select{
+    margin-left: 5px;
   }
 }
 
@@ -373,17 +415,18 @@
     width: 100%;
     justify-content: space-between;
   }
-}
-@media (max-width: 768px) {
-  .edit-map-form {
-    grid-template-columns: 1fr; /* Stack all inputs vertically */
-    row-gap: 15px;
+  .sidebar{
+    margin-top: 65px;
   }
-  .updates-btn {
-    justify-content: flex-start; /* Buttons stack naturally */
-    gap: 10px;
+  .map-item-content{
+    align-items: flex-start;
+  }
+  
+  select{
+    margin-left: 5px;
   }
 }
+
 
 /* --- Menu Wrapper --- */
 .menu-wrapper {

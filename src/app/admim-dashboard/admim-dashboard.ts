@@ -115,7 +115,6 @@ export class AdmimDashboard {
       alert('No file URL found for this map.');
       return;
     }
-    alert("fuc my life")
     this.mapService.OnDownloadMapFiles(map.id.toString(), map.gpxUrl, map.jsonUrl, map.name);
   }
   OnDelete(map: MapData) {
@@ -141,7 +140,10 @@ export class AdmimDashboard {
   OnEdit(map: MapData) {
     this.activeMenuId = null;
     this.activeEditId = map.id;
-    this.editableMap = { ...map };
+    this.editableMap = { ...map,
+      active: map.status === 0, 
+    visibility: map.visibility === 0 ? 'public' : 'private' 
+    };
   }
   cancelEdit() {
     this.activeEditId = null;
@@ -150,17 +152,46 @@ export class AdmimDashboard {
 
   OnSave() {
     this.activeEditId = null;
-    // this.mapService.OnUpdateMap(map);
-    if (!this.editableMap) return;
-    console.log('Saving map:', this.editableMap);
+    this.mapService.OnUpdateMap(this.editableMap!).subscribe({
+      next:(response:any)=>{
+        if(response.isSuccess){
+          const updatedMap: MapData = response.data;
+          const index = this.maps.findIndex((m) => m.id === updatedMap.id);
+          if(index > -1){
+            this.maps[index] = {
+            ...updatedMap,
+            active: updatedMap.status === 0, // ACTIVE
+            visibility: updatedMap.visibility === 0 ? 'public' : 'private'
+            };
+          }
+          this.toastr.success(`Map "${updatedMap.name}" updated successfully.`, 'Success', {
+          positionClass: 'toast-top-right',
+          timeOut: 3000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+          console.log('Map updated successfully:', updatedMap);
 
-    // Find index of original map
-    const index = this.maps.findIndex((m) => m.id === this.editableMap!.id);
-    if (index > -1) {
-      // Update the original map with edited copy
-      this.maps[index] = { ...this.editableMap };
-    }
-    this.cancelEdit();
+        }
+        else {
+        console.error('Update failed:', response.errorMessage);
+      }
+      },
+      error:(err)=>{
+        console.error('Update failed:', err);
+        this.toastr.error(`Map "${this.editableMap!.name}" update failed.`, 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 3000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+      },
+      complete:()=>{
+        this.cancelEdit();
+      }
+    });
   }
 
   async signOut() {

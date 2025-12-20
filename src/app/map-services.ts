@@ -70,6 +70,15 @@ export class MapServices {
   }
 
   OnUpdateMap(map:MapData){
+    const updatedMap={
+      name:map.name,
+      description:map.description,
+      gpxUrl:map.gpxUrl,
+      jsonUrl:map.jsonUrl,
+      status:(map.active)?0:1,
+      visibility:(map.visibility=='public')?0:1,
+    }
+    return this.http.patch(`${this.baseurl}/${map.id}`,updatedMap);
     // update map details in database
   }
 
