@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../Environment/environment';
+import { environment } from '../environments/environment';
 
 interface GpxUploadResponse {
   status: string;
