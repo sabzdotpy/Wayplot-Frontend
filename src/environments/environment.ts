@@ -10,7 +10,7 @@ export const environment = {
   },
   production: true,
 
-  ASP_API_URL: 'https://asp.wayplot.com',
-  DJANGO_API_URL: 'https://django.wayplot.com',
+  ASP_API_URL: 'http://13.211.49.191/asp',
+  DJANGO_API_URL: 'http://13.211.49.191/django',
 
 };
