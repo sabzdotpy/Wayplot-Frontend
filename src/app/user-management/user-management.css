@@ -88,29 +88,28 @@
 } */
 
 .admin-grid {
-    display: flex;
-    gap: 30px;
-    margin: 40px 40px ;
-    flex-wrap: wrap;
-    align-items: start;
-    box-sizing: border-box;
-    position: relative;
+  display: flex;
+  gap: 30px;
+  margin: 40px;
+  flex-wrap: wrap;
+  align-items: stretch;
+  box-sizing: border-box;
+  position: relative;
+  min-height: calc(100vh - 10rem);
 }
 
-/* Side Panel (Create User) - Takes less space */
 .side-panel {
-    flex: 0 0 25%; 
-    padding: 30px;
-    height: fit-content; /* Ensure it only takes the height it needs */
+  flex: 0 0 25%;
+  padding: 30px;
+  width: 100%;
 }
 
-/* Main Table Panel - Takes remaining space */
 .main-panel-table {
-    flex: 1 0 65%;
-    /* flex-grow: 1; */
-    padding: 30px;
-    box-sizing: border-box;
-    position: relative;
+  flex: 1;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .glass-panel {

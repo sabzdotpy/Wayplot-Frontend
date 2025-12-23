@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import axios from "../lib/axios";
 import { user } from '@angular/fire/auth';
 
 export interface AuthResponseWrapper {
@@ -69,41 +69,40 @@ export class UserService {
   
 
 
-  constructor(private http:HttpClient) {}
+  constructor(){}
 
-  getUsers(): Observable<ApiUserResponse[]> {
-    return this.http.get<ApiUserResponse[]>(`${this.baseurl}/User/all`);
+  getUsers(): Promise<ApiUserResponse[]> {
+    return axios.get<ApiUserResponse[]>(`${this.baseurl}/User/all`).then(res => res.data);
   }
 
-  createUser(userData: Partial<User>): Observable<AuthResponseWrapper> {
-    const newUser:Partial< User> = {
-      name:userData.name,
-      email:userData.email,
-      password:userData.password,
-      authType:AuthType.OAUTH,
-      userRole:userData.userRole,
-      scopes:userData.scopes
+  createUser(userData: Partial<User>): Promise<AuthResponseWrapper> {
+    const newUser: Partial<User> = {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+      authType: AuthType.OAUTH,
+      userRole: userData.userRole,
+      scopes: userData.scopes
     };
     console.log(newUser);
-    return this.http.post<AuthResponseWrapper>(`${this.baseurl}/Auth/signUp`,newUser);
+    return axios.post<AuthResponseWrapper>(`${this.baseurl}/Auth/signUp`, newUser).then(res => res.data);
   }
 
-  updateUser(updatedUser: ApiUserResponse): Observable<ApiUserResponse> {
-    const id=updatedUser.id;
-    const patchBody={
-      name:updatedUser.name,
-      email:updatedUser.email,
-      password:updatedUser.password,
-      authType:updatedUser.authType,
-      role:updatedUser.role,
-      status:updatedUser.status,
-      scopes:[updatedUser.scopes]
-    }
-    return this.http.patch<ApiUserResponse>(`${this.baseurl}/User/${id}`, patchBody);
-    
+  updateUser(updatedUser: ApiUserResponse): Promise<ApiUserResponse> {
+    const id = updatedUser.id;
+    const patchBody = {
+      name: updatedUser.name,
+      email: updatedUser.email,
+      password: updatedUser.password,
+      authType: updatedUser.authType,
+      role: updatedUser.role,
+      status: updatedUser.status,
+      scopes: [updatedUser.scopes]
+    };
+    return axios.patch<ApiUserResponse>(`${this.baseurl}/User/${id}`, patchBody).then(res => res.data);
   }
   
-  deleteUser(id: string): Observable<string> {
-    return this.http.delete(`${this.baseurl}/User/${id}`,{ responseType: 'text' });
+  deleteUser(id: string): Promise<string> {
+    return axios.delete(`${this.baseurl}/User/${id}`).then(res => res.data);
   }
 }

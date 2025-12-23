@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import axios from "../../lib/axios";
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -49,7 +49,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
   // --- CONFIGURATION & CONSTANTS ---
   private CLOUDINARY_JSON_URL = '';
   // Set this to your Python backend URL for routing
-  private readonly API_URL = `${environment.DJANGO_API_URL}/routing/calculate/`;
+  private readonly DJANGO_API_URL = `${environment.DJANGO_API_URL}/routing/calculate/`;
 
   // --- ANGULAR STATE (Bound to HTML) ---
   statusMessage: string = 'Initializing...';
@@ -109,7 +109,6 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
 
   // --- CONSTRUCTOR & LIFECYCLE HOOKS ---
   constructor(
-    private http: HttpClient,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private toastr: ToastrService
@@ -188,31 +187,31 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
     this.cd.detectChanges();
   }
 
-  private loadGraphData(): void {
-    this.http.get<Graph>(this.CLOUDINARY_JSON_URL).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.graphData = data;
-        // NEW: Populate the ID to Node Map
-        this.idToNodeMap = new Map(data.nodes.map((node) => [node.id, node]));
-        this.statusMessage = 'Graph data loaded. Click map to set <b>Start</b>.';
-        this.drawInitialEdges();
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        this.toastr.error('Error loading graph data. Please try again later.', 'Error', {
-          positionClass: 'toast-top-right',
-          timeOut: 5000,
-          progressBar: true,
-          easeTime: 400,
-          toastClass: 'ngx-toastr slide-in',
-        });
-        
-        console.error('Failed to load graph data:', err);
-        this.statusMessage = 'Error loading JSON. Check console for details.';
-        this.cd.detectChanges();
-      },
-    });
+  private async loadGraphData(): Promise<void> {
+    try {
+      const response = await axios.get<Graph>(this.CLOUDINARY_JSON_URL, {
+        withCredentials: false
+      });
+      const data = response.data;
+      console.log(data);
+      this.graphData = data;
+      // NEW: Populate the ID to Node Map
+      this.idToNodeMap = new Map(data.nodes.map((node) => [node.id, node]));
+      this.statusMessage = 'Graph data loaded. Click map to set <b>Start</b>.';
+      this.drawInitialEdges();
+      this.cd.detectChanges();
+    } catch (err: any) {
+      this.toastr.error('Error loading graph data. Please try again later.', 'Error', {
+        positionClass: 'toast-top-right',
+        timeOut: 5000,
+        progressBar: true,
+        easeTime: 400,
+        toastClass: 'ngx-toastr slide-in',
+      });
+      console.error('Graph Data Load Error:', err);
+      this.statusMessage = 'Error loading JSON. Check console for details.';
+      this.cd.detectChanges();
+    }
   }
 
   // FIXED: Only draws the gray polyline for the edges/roads
@@ -381,7 +380,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
       this.watchId = navigator.geolocation.watchPosition(
         (position) => this.updateLocation(position),
         (error) => this.handleLocationError(error),
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 }
       );
     } else {
       this.statusMessage = 'Geolocation is not supported by your browser.';
@@ -452,7 +451,7 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
 
   // --- ROUTE CALCULATION (API POST) ---
 
-  public calculateRoute(): void {
+  public async calculateRoute(): Promise<void> {
     if (this.startNodeId === null || this.endNodeId === null) {
       this.statusMessage = 'Please set both Start and End points.';
       return;
@@ -472,50 +471,49 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
     };
 
     // 3. Send request to backend
-    this.http.post<RouteResponse>(this.API_URL, requestBody).subscribe({
-      next: (response) => {
-        // Stop scanning effect after path is found
-        this.scanLayers.forEach((l) => this.map.removeLayer(l));
-        this.scanLayers = [];
-
-        if (response.path_coords.length > 0) {
-          this.drawRoute(response.path_coords);
-          let turnMessage = '';
-        if (response.mode === 'least_turn') {
-            turnMessage = `<br>Turns: <b>${response.turn_count}</b>`;
+    try {
+      const response = await axios.post<RouteResponse>(
+        this.DJANGO_API_URL, 
+        requestBody, 
+        {
+          withCredentials: false,
         }
-
-          this.statusMessage = `
-                    <b>Path Found! (${response.mode})</b><br>
-                    Distance: ${response.total_physical_distance.toFixed(2)} meters
-                    ${turnMessage}<br>
-                    Total Cost: ${response.total_cost.toFixed(2)} ${response.units}
-                    
-                `;
-        } else {
-          this.statusMessage = `No path found for ${response.mode} routing.`;
+      );
+      const data = response.data;
+      // Stop scanning effect after path is found
+      this.scanLayers.forEach((l) => this.map.removeLayer(l));
+      this.scanLayers = [];
+      if (data.path_coords.length > 0) {
+        this.drawRoute(data.path_coords);
+        let turnMessage = '';
+        if (data.mode === 'least_turn') {
+          turnMessage = `<br>Turns: <b>${data.turn_count}</b>`;
         }
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        this.toastr.error('Error connecting to routing service. Please try again later.', 'Error', {
-          positionClass: 'toast-top-right',
-          timeOut: 5000,
-          progressBar: true,
-          easeTime: 400,
-          toastClass: 'ngx-toastr slide-in',
-        });
-        console.error('Routing API Error:', err);
-        // Example of better error handling
-        const detail =
-          err.error?.detail ||
-          'Could not connect to routing service (http://127.0.0.1:8000/route).';
-        this.statusMessage = `Error: ${detail}`;
-        this.scanLayers.forEach((l) => this.map.removeLayer(l));
-        this.scanLayers = [];
-        this.cd.detectChanges();
-      },
-    });
+        this.statusMessage = `
+          <b>Path Found! (${data.mode})</b><br>
+          Distance: ${data.total_physical_distance.toFixed(2)} meters
+          ${turnMessage}<br>
+          Total Cost: ${data.total_cost.toFixed(2)} ${data.units}
+        `;
+      } else {
+        this.statusMessage = `No path found for ${data.mode} routing.`;
+      }
+      this.cd.detectChanges();
+    } catch (err: any) {
+      this.toastr.error('Error connecting to routing service. Please try again later.', 'Error', {
+        positionClass: 'toast-top-right',
+        timeOut: 5000,
+        progressBar: true,
+        easeTime: 400,
+        toastClass: 'ngx-toastr slide-in',
+      });
+      console.error('Routing API Error:', err);
+      const detail = err?.response?.data?.detail || 'Could not connect to routing service (http://127.0.0.1:8000/route).';
+      this.statusMessage = `Error: ${detail}`;
+      this.scanLayers.forEach((l) => this.map.removeLayer(l));
+      this.scanLayers = [];
+      this.cd.detectChanges();
+    }
   }
 
   // --- PATH VISUALIZATION & ANIMATION ---

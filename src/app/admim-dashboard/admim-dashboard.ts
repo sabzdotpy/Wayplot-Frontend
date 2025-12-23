@@ -117,12 +117,12 @@ export class AdmimDashboard {
     }
     this.mapService.OnDownloadMapFiles(map.id.toString(), map.gpxUrl, map.jsonUrl, map.name);
   }
-  OnDelete(map: MapData) {
+
+  async OnDelete(map: MapData) {
     this.activeMenuId = null;
     this.maps = this.maps.filter((m) => m.id !== map.id);
 
-    this.mapService.DeleteMap(map.id.toString()).subscribe({
-      next: () => {
+    let res = await this.mapService.DeleteMap(map.id.toString())
         this.maps = this.maps.filter((m) => m.id !== map.id);
         this.toastr.success(`Map "${map.name}" deleted successfully.`, 'Success', {
           positionClass: 'toast-top-right',
@@ -131,8 +131,6 @@ export class AdmimDashboard {
           easeTime: 400,
           toastClass: 'ngx-toastr slide-in',
         });
-      }
-    });
   }
 
   activeEditId: number | null = null;
@@ -150,48 +148,47 @@ export class AdmimDashboard {
     this.editableMap = null;
   }
 
-  OnSave() {
-    this.activeEditId = null;
-    this.mapService.OnUpdateMap(this.editableMap!).subscribe({
-      next:(response:any)=>{
-        if(response.isSuccess){
-          const updatedMap: MapData = response.data;
-          const index = this.maps.findIndex((m) => m.id === updatedMap.id);
-          if(index > -1){
-            this.maps[index] = {
-            ...updatedMap,
-            active: updatedMap.status === 0, // ACTIVE
-            visibility: updatedMap.visibility === 0 ? 'public' : 'private'
-            };
-          }
-          this.toastr.success(`Map "${updatedMap.name}" updated successfully.`, 'Success', {
-          positionClass: 'toast-top-right',
-          timeOut: 3000,
-          progressBar: true,
-          easeTime: 400,
-          toastClass: 'ngx-toastr slide-in',
-        });
-          console.log('Map updated successfully:', updatedMap);
+  async OnSave() {
+    try {
+      this.activeEditId = null;
+      let res = await this.mapService.OnUpdateMap(this.editableMap!)
 
+          if(res.isSuccess){
+            const updatedMap: MapData = res.data;
+            const index = this.maps.findIndex((m) => m.id === updatedMap.id);
+            if(index > -1){
+              this.maps[index] = {
+              ...updatedMap,
+              active: updatedMap.status === 0, // ACTIVE
+              visibility: updatedMap.visibility === 0 ? 'public' : 'private'
+              };
+            }
+            this.toastr.success(`Map "${updatedMap.name}" updated successfully.`, 'Success', {
+            positionClass: 'toast-top-right',
+            timeOut: 3000,
+            progressBar: true,
+            easeTime: 400,
+            toastClass: 'ngx-toastr slide-in',
+          });
+            console.log('Map updated successfully:', updatedMap);
+
+          }
+          else {
+          console.error('Update failed:', res.errorMessage);
         }
-        else {
-        console.error('Update failed:', response.errorMessage);
-      }
-      },
-      error:(err)=>{
-        console.error('Update failed:', err);
-        this.toastr.error(`Map "${this.editableMap!.name}" update failed.`, 'Error', {
-          positionClass: 'toast-top-right',
-          timeOut: 3000,
-          progressBar: true,
-          easeTime: 400,
-          toastClass: 'ngx-toastr slide-in',
-        });
-      },
-      complete:()=>{
+
         this.cancelEdit();
       }
-    });
+      catch (err) {
+        console.error('Error during map update:', err);
+        this.toastr.error('Failed to update map. Please try again.', 'Error', {
+          positionClass: 'toast-top-right',
+          timeOut: 5000,
+          progressBar: true,
+          easeTime: 400,
+          toastClass: 'ngx-toastr slide-in',
+        });
+      }
   }
 
   async signOut() {

@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import axios from "../lib/axios";
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
-interface GpxUploadResponse {
+export interface GpxUploadResponse {
   status: string;
   message: string;
   cloudinary_gpx_url: string;
@@ -17,14 +17,17 @@ interface GpxUploadResponse {
 })
 export class CloudinaryService {
 
-  constructor(private http:HttpClient){}
+  constructor(){}
 
   private apiUrl=`${environment.DJANGO_API_URL}/routing/upload_gpx/`
   
-  UploadToCloudinary(file:File):Observable<GpxUploadResponse>{
+  async UploadToCloudinary(file: File): Promise<GpxUploadResponse> {
     const formData = new FormData();
     formData.append('gpx_file', file, file.name);
-    return this.http.post<GpxUploadResponse>(this.apiUrl,formData);
+    const res = await axios.post<GpxUploadResponse>(this.apiUrl, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return res.data;
   }
 
 
