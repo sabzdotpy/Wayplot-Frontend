@@ -1,6 +1,6 @@
 <div class="container">
     
-    <div class="sidebar">
+    <div class="sidebar" [class.minimized]="isSidebarMinimized">
         <div class="header">
             <span>
                 <button class="icon-btn" (click)="goBack()">
@@ -8,6 +8,9 @@
                 </button>
             </span>
             <h3>{{mapName}}</h3>
+            <button class="mobile-toggle-btn" (click)="toggleSidebar()">
+            {{ isSidebarMinimized ? '︽' : '︾' }}
+            </button>
         </div>
         
         <div class="panel">
