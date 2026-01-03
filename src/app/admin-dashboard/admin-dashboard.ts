@@ -11,13 +11,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-admim-dashboard',
+  selector: 'app-admin-dashboard',
   standalone: true,
   imports: [CommonModule, MatSlideToggleModule, FormsModule, ToastrModule, RouterLink],
-  templateUrl: './admim-dashboard.html',
-  styleUrl: './admim-dashboard.css',
+  templateUrl: './admin-dashboard.html',
+  styleUrls: ['./admin-dashboard.css'],
 })
-export class AdmimDashboard {
+export class AdminDashboard {
   constructor(
     private dialog: MatDialog,
     private mapService: MapServices,
