@@ -3,7 +3,7 @@
   <nav class="glass-nav">
     <div class="nav-brand">WAYPLOT <span class="badge">USER DASHBOARD</span></div>
     <div>
-      <button class="btn btn-secondary" (click)="signOut()">Sign Out</button>
+      <button class="btn btn-secondary" (click)="signOut()">🔒 Sign Out</button>
     </div>
   </nav>
 
@@ -52,7 +52,7 @@
           </div>
           
           <div class="card-meta">
-            <span class="view-count">{{map.views | number}} 4 views</span>
+            <span class="view-count">{{map.views | number}} views</span>
             
             <div class="action-buttons">
               <button class="btn btn-download" title="Download Map" (click)="OnDownload(map.id, map.gpxUrl,map.jsonUrl,map.name)">

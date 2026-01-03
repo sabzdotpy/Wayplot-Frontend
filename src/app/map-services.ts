@@ -14,6 +14,8 @@ export interface MapData{
   visibility: string | number;
   createdAt?: Date;
   updatedAt?: Date;
+  views?: number;
+  downloads?: number;
 }
 
 @Injectable({
@@ -49,7 +51,6 @@ export class MapServices {
   }
 
   async logDownload(mapId: string): Promise<boolean> {
-    alert("logging download for mapId: " + mapId);
     let userId = localStorage.getItem('userId') || 'unknown';
     let res = await axios.post("Map/log-download", {
       mapId: mapId,

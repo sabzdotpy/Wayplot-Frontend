@@ -126,9 +126,15 @@ export class UserDashboard implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.maps = this.mockMaps;
     this.mapService.listAllMaps().subscribe((maps: any) => {
-      this.maps = maps.data;
+      let flattenedMaps = maps.data.map((mapObj: any) => {
+        return {
+          ...mapObj.map,
+          views: mapObj.viewCount,
+          downloads: mapObj.downloadCount,
+        }
+      });
+      this.maps = flattenedMaps;
     });
     if (!localStorage.getItem('token')) {
       this.toastr.error('No token found. Please sign in.', 'Error', {
@@ -178,7 +184,7 @@ get filteredMaps(): any[] {
       easeTime: 400,
       toastClass: 'ngx-toastr slide-in',
     });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     localStorage.clear();
     this.router.navigate(['/signin']);
   }

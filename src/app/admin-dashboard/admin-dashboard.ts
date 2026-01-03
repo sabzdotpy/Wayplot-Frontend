@@ -25,7 +25,14 @@ export class AdminDashboard {
     private router: Router
   ) {
     this.mapService.listAllMaps().subscribe((maps: any) => {
-      this.maps = maps.data;
+      let flattenedMaps = maps.data.map((mapObj: any) => {
+        return {
+          ...mapObj.map,
+          views: mapObj.viewCount,
+          downloads: mapObj.downloadCount,
+        }
+      });
+      this.maps = flattenedMaps;
     });
   }
 
@@ -34,43 +41,6 @@ export class AdminDashboard {
   get totalMaps(): number {
     return this.maps.length;
   }
-
-  // map1: MapData = {
-  //   id: 1,
-  //   name: 'Kalasalingam Campus Map v2',
-  //   description: 'Detailed map of all campus roads.',
-  //   active: true,
-  //   uploadedAt: new Date('2025-12-12'),
-  //   gpxUrl:
-  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508403/gpx_graphs/raw_gpx/KLU_Campus_All_Roads_42014d5c',
-  //   jsonUrl:
-  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765508404/gpx_graphs/json_graph/KLU_Campus_All_Roads',
-  //   visibility: 'Public',
-  // };
-
-  // map2: MapData = {
-  //   id: 2,
-  //   name: 'Kalasalingam University',
-  //   description: 'Full walking path track.',
-  //   active: true,
-  //   uploadedAt: new Date('2025-12-10'),
-  //   gpxUrl:
-  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465963/gpx_graphs/raw_gpx/klu_full_walk_2684dcf9',
-  //   jsonUrl:
-  //     'https://res.cloudinary.com/dezwo04ym/raw/upload/v1765465966/gpx_graphs/json_graph/klu_full_walk',
-  //   visibility: 'Public',
-  // };
-
-  // map3: MapData = {
-  //   id: 3,
-  //   name: 'Warehouse Map',
-  //   description: 'Internal warehouse layout.',
-  //   active: true,
-  //   uploadedAt: new Date('2025-12-03'),
-  //   gpxUrl: 'assets/maps/city-map.png',
-  //   jsonUrl: '',
-  //   visibility: 'Private',
-  // };
 
   ngOnInit() {
     if (!localStorage.getItem('token')) {
@@ -135,7 +105,9 @@ export class AdminDashboard {
 
   activeEditId: number | null = null;
   editableMap: MapData | null = null;
+
   OnEdit(map: MapData) {
+    console.log(map);
     this.activeMenuId = null;
     this.activeEditId = map.id;
     this.editableMap = { ...map,
@@ -143,9 +115,28 @@ export class AdminDashboard {
     visibility: map.visibility === 0 ? 'public' : 'private' 
     };
   }
+
   cancelEdit() {
     this.activeEditId = null;
     this.editableMap = null;
+  }
+
+  viewMap(mapUrl: string, mapName: string) {
+    if (!mapUrl) {
+      alert("Sorry, Map url doesn't exist!");
+      return;
+    }
+    this.router.navigate(['/viewmap'], { queryParams: { mapname: mapName, mapurl: mapUrl } });
+  }
+
+  async onStatusChange(active: boolean) {
+    this.toastr.info(`Map is set to ${(active) ? "active" : "inactive"}. Remember to save changes.`, 'Info', {
+      positionClass: 'toast-top-right',
+      timeOut: 2000,
+      progressBar: true,
+      easeTime: 400,
+      toastClass: 'ngx-toastr slide-in',
+    });
   }
 
   async OnSave() {
@@ -199,7 +190,7 @@ export class AdminDashboard {
       easeTime: 400,
       toastClass: 'ngx-toastr slide-in',
     });
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     localStorage.clear();
     this.router.navigate(['/signin']);
   }

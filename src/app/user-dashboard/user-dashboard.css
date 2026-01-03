@@ -56,23 +56,21 @@
 
 
 .btn-primary,.btn-secondary{
-  background: #D90445; /* Pink/Magenta Theme */
+  background: #d13646; /* Pink/Magenta Theme */
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: .45rem;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(217, 4, 69, 0.3);
 }
 
 .btn-primary:hover {
   background: #bd033c;
-  transform: translateY(-2px);
 }
 
 .btn-secondary{

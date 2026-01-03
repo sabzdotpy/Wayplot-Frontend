@@ -3,8 +3,15 @@
   <nav class="glass-nav">
     <div class="nav-brand">WAYPLOT <span class="badge">ADMIN</span></div>
     <div class="btn-nav">
-      <button class="btn btn-primary" routerLink="/analyticsdashboard" >View Analytics</button>
-      <button class="btn btn-secondary" (click)="signOut()">Sign Out</button>
+      <button class="btn btn-primary" routerLink="/usermanagement">
+        <span>👤</span> User Management
+      </button>
+      <button class="btn btn-primary" routerLink="/analyticsdashboard" >
+        <span>📊</span> View Analytics
+      </button>
+      <button class="btn btn-secondary" (click)="signOut()">
+        🔒 Sign Out
+      </button>
     </div>
   </nav>
 
@@ -17,11 +24,8 @@
           <h2>Your Maps</h2>
 
           <div class="upload-wrapper">
-            <button class="btn btn-primary" routerLink="/usermanagement">
-             Manage User
-            </button>
             <button class="btn btn-primary" (click)="openDialog() ">
-              Upload Map (.gpx)
+              📄 Upload Map (.gpx)
             </button>
           </div>
         </div>
@@ -40,16 +44,18 @@
               <div class="map-info">
                 <h3>{{item.name}}</h3>
                 <span>{{item.description}}</span>
-                <p>{{item.createdAt|date:'dd-MM-yyyy'}} <br> 👁️ 4 views</p>
+                <p>{{item.createdAt|date:'dd-MM-yyyy'}} <br> 👁️ {{item.views}} views | ⏬ {{item.downloads}} exports </p>
               </div>
               <div class="map-meta">
-                <span class="tag tag-generated">Uploaded</span>
                 @if(item.status===2){
-                  <span class="status status-active">deleted</span>
+                  <span class="status status-active">Deleted</span>
                 }
                 @else {
                   <span class="status status-active">{{(item.status == 0) ? 'Active':'Inactive'}}</span>
                 }
+                <button (click)="viewMap(item.jsonUrl, item.name)" class="btn btn-primary">
+                  View Map
+                </button>
                 
                 <div class="menu-wrapper">
 
@@ -105,7 +111,7 @@
                 </div>
                 <div>
                   <label for="mapstatus">Map Status:</label>
-                  <mat-slide-toggle id="toggle-Button" name="mapstatus" [(ngModel)]="editableMap!.active" [checked]="editableMap!.active"></mat-slide-toggle>
+                  <mat-slide-toggle id="toggle-Button" name="mapstatus" [(ngModel)]="editableMap!.active" [checked]="editableMap!.active" (click)="onStatusChange(editableMap!.active)"></mat-slide-toggle>
                 </div>
                 <div>
                   <label for="mapvisiblity">Map Visiblity:</label>
