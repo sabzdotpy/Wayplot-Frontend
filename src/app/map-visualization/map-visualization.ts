@@ -46,6 +46,12 @@ interface RouteResponse {
   styleUrl: './map-visualization.css',
 })
 export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
+
+  isSidebarMinimized = false; // Set to true by default on mobile if you prefer
+
+  toggleSidebar() {
+    this.isSidebarMinimized = !this.isSidebarMinimized;
+  }
   // --- CONFIGURATION & CONSTANTS ---
   private CLOUDINARY_JSON_URL = '';
   // Set this to your Python backend URL for routing
