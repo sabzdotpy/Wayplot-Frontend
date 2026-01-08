@@ -506,7 +506,8 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
       }
       this.cd.detectChanges();
     } catch (err: any) {
-      this.toastr.error('Error connecting to routing service. Please try again later.', 'Error', {
+      const detail = err?.response?.data?.detail || err?.response?.data?.error || err?.response?.data?.message || 'Error when connecting to routing service.';
+      this.toastr.error(`${detail}`, 'Error', {
         positionClass: 'toast-top-right',
         timeOut: 5000,
         progressBar: true,
@@ -514,7 +515,6 @@ export class MapVisualization implements OnInit, AfterViewInit, OnDestroy {
         toastClass: 'ngx-toastr slide-in',
       });
       console.error('Routing API Error:', err);
-      const detail = err?.response?.data?.detail || 'Could not connect to routing service (http://127.0.0.1:8000/route).';
       this.statusMessage = `Error: ${detail}`;
       this.scanLayers.forEach((l) => this.map.removeLayer(l));
       this.scanLayers = [];

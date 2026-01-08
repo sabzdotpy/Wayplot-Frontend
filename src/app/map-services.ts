@@ -30,7 +30,7 @@ export class MapServices {
 
   listAllMaps(): Observable<MapData[]> {
     return from(
-      axios.get<MapData[]>(this.baseurl).then(res => res.data)
+      axios.get<MapData[]>(this.baseurl, { timeout: 10000 }).then(res => res.data)
     );
   }
 
@@ -86,6 +86,12 @@ export class MapServices {
 
   UploadMapDB(map: Partial<MapData>): Promise<MapData> {
     let uploaderId = localStorage.getItem('userId') || 'unknown';
-    return axios.post<MapData>(`${this.baseurl}/${uploaderId}`, map).then(res => res.data);
+    return axios
+      .post<MapData>(`${this.baseurl}/${uploaderId}`, map, { timeout: 10000 })
+      .then((res) => res.data)
+      .catch((err) => {
+        console.error('Error uploading map to DB:', err);
+        throw err;
+      })
   }
 }

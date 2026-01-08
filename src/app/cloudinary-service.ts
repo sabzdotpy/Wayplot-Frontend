@@ -25,7 +25,8 @@ export class CloudinaryService {
     const formData = new FormData();
     formData.append('gpx_file', file, file.name);
     const res = await axios.post<GpxUploadResponse>(this.apiUrl, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 20000
     });
     return res.data;
   }

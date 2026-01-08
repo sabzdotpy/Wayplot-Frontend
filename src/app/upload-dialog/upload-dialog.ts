@@ -8,11 +8,12 @@ import { CommonModule } from '@angular/common';
 import { MapData, MapServices } from '../map-services';
 import { switchMap, catchError, finalize } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 @Component({
   selector: 'app-upload-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatProgressSpinnerModule, FormsModule, CommonModule],
+  imports: [MatDialogModule, MatButtonModule, MatProgressSpinnerModule, FormsModule, CommonModule, ToastrModule],
   templateUrl: './upload-dialog.html',
   styleUrl: './upload-dialog.css',
 })
@@ -26,7 +27,8 @@ export class UploadDialog {
   constructor(
     private cloudinaryservice: CloudinaryService,
     private dialogRef: MatDialogRef<UploadDialog>,
-    private mapservices: MapServices
+    private mapservices: MapServices,
+    private toastr: ToastrService
   ) {}
 
   onSelectedFile(event: any) {
@@ -63,9 +65,17 @@ export class UploadDialog {
           return res;
         }),
         catchError((error) => {
+          this.isUploading = false;
           console.error('Upload Process Failed:', error);
           alert('Upload failed: ' + (error.message || 'Check console for details.'));
           // Return a new error Observable to keep the chain going/halt gracefully
+          this.toastr.error(`${error.message || 'Upload failed. Check console for details.'}`, 'Error', {
+            positionClass: 'toast-top-right',
+            timeOut: 5000,
+            progressBar: true,
+            easeTime: 400,
+            toastClass: 'ngx-toastr slide-in',
+          });
           return throwError(() => new Error('Upload process failed.'));
         }),
         finalize(() => {
